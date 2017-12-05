@@ -14,9 +14,10 @@ class RecursoController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($order='controlador', $page='page.1')
     {
-        $recursos = Recurso::paginate();
+        //$recursos = Recurso::paginate();
+        $recursos = Recurso::getListadoRecursoPorModulo('todos', $order, $page);
         $model = MyFunction::className(Recurso::class);
         $count = $recursos->count();
         return view('painel.recursos.index', compact('recursos', 'model', 'count'));

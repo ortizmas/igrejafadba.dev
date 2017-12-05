@@ -21,6 +21,11 @@
     		return array_pop($path); //Obten o ultimo array
 		}
 
+		public static function ucfirst(string $string)
+		{
+			return Str::ucfirst($string);
+		}
+
 		public static function full_name($nome, $apellido)
 		{
 			echo "{$nome} apellidos: {$apellido}";

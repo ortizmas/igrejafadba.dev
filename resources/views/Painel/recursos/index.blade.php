@@ -28,7 +28,7 @@
                 <ul class="nav nav-tabs nav-justified">
                     <?php $counter = 1; ?>
                     <?php foreach($recursos as $recurso): ?>
-                        <li class="<?php echo ($counter==1) ? 'active' : '';?>"><a href="<?php echo '#tab'.$counter; ?>" data-toggle="tab"><?php echo empty($recurso->modulo) ? 'Sin módulos' : ucfirst($recurso->modulo); ?></a></li>
+                        <li class="<?php echo ($counter==1) ? 'active' : '';?>"><a href="<?php echo '#tab'.$counter; ?>" data-toggle="tab"><?php echo empty($recurso->modulo) ? 'Sin módulos' : MyFunction::ucfirst($recurso->modulo); ?></a></li>
                         <?php $counter++; ?>
                     <?php endforeach; ?>                
                 </ul>
@@ -119,7 +119,7 @@
                             <div class="col-sm-7">
                                 <div class="dataTables_paginate paging_simple_numbers" id="example1_paginate">
                                     <ul class="pagination">
-                                        {{ $recursos->links() }}
+                                        {{-- {{ $recursos->links() }} --}}
                                     </ul>
                                 </div>
                             </div>
