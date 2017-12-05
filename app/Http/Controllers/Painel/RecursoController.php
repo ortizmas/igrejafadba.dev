@@ -1,9 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Painel;
 
 use App\Models\Recurso;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use MyFunction;
 
 class RecursoController extends Controller
 {
@@ -14,7 +16,10 @@ class RecursoController extends Controller
      */
     public function index()
     {
-        //
+        $recursos = Recurso::paginate();
+        $model = MyFunction::className(Recurso::class);
+        $count = $recursos->count();
+        return view('painel.recursos.index', compact('recursos', 'model', 'count'));
     }
 
     /**

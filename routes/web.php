@@ -29,6 +29,11 @@ Route::group(['prefix' => 'painel'], function(){
 	Route::resource('perfil', 'Painel\PerfilController')->middleware('auth');
 	Route::get('perfil/{model?}/{id?}', 'Painel\PerfilController@estado')->middleware('auth');
 	Route::get('Perfil/{section}/{id?}', 'Painel\PerfilController@delete')->middleware('auth');
+
+	//PerfilController
+	Route::resource('recurso', 'Painel\RecursoController')->middleware('auth');
+	Route::get('recursos/{model?}/{id?}', 'Painel\RecursoController@estado')->middleware('auth');
+	Route::get('Recurso/{section}/{id?}', 'Painel\RecursoController@delete')->middleware('auth');
 	
 	//TaskController
 	//Route::resource('task', 'Painel\TaskController')->middleware('auth');
