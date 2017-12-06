@@ -66,9 +66,11 @@ class RecursoController extends Controller
     public function edit($key)
     {
         if(!$id = MyFunction::getKey($key, 'upd_recurso', 'int')) {
-            dd($key);
+            return redirect()->route('recurso.index');
         }
-        dd(PUBLIC_PATH);
+
+        $recurso = Recurso::findOrFail($id);
+        return view('painel.recursos.edit')->withRecurso($recurso);;
         
     }
 
