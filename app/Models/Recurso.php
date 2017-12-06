@@ -37,6 +37,8 @@ class Recurso extends Model
      */
     const MI_CUENTA = 3;
 
+    protected $fillable = ['modulo', 'controlador', 'accion', 'recurso', 'descripcion', 'activo', 'custom'];
+
     public function menu()
     {
     	return $this->hasMany(Menu::class);

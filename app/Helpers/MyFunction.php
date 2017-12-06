@@ -1,6 +1,7 @@
 <?php 
 	namespace App\Helpers;
 	use Illuminate\Support\Str;
+	use Illuminate\Http\Request;
 
 	class MyFunction
 	{
@@ -64,11 +65,14 @@
 	        $validKey   = self::setKey($id, $action);               
 	        $valid      = ($validKey === $valueKey) ? TRUE : FALSE; 
 	        if(!$valid) {
-	            Flash::error('Acceso denegado. La llave de seguridad es incorrecta.');
-	            if($popup) {
-	                View::error();
-	            } 
+	            //Flash::error('Acceso denegado. La llave de seguridad es incorrecta.');
+	            // if($popup) {
+	            //     View::error();
+	            // } 
 	            return FALSE;
+	            
+	            // return redirect()->back()->with('status', 'Acceso denegado. La llave de seguridad es incorrecta.');
+	            
 	        }                
 	        return ($filter) ? Str::camel($id, $filter) : $id;
 	    } 

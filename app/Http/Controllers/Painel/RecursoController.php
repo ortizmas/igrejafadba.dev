@@ -32,7 +32,7 @@ class RecursoController extends Controller
      */
     public function create()
     {
-        //
+        return view('painel.recursos.create');
     }
 
     /**
@@ -43,7 +43,18 @@ class RecursoController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'controlador' => 'required|max:45',
+            'descripcion' => 'required|max:150',
+        ]);
+
+        $create = Recurso::create($request->all());
+
+        if ($create) {
+            return redirect()->route('recurso.index')->with('success', 'O recurso foi criado com sucesso!');
+        } else {
+            return redirect()->route('recurso.index')->with('status', 'Ocurrio algum erro, e o recurso nçao foi criado!!');
+        }
     }
 
     /**
@@ -65,13 +76,17 @@ class RecursoController extends Controller
      */
     public function edit($key)
     {
+
         if(!$id = MyFunction::getKey($key, 'upd_recurso', 'int')) {
-            return redirect()->route('recurso.index');
+            return redirect()->route('recurso.index')->with('status', 'Acceso denegado. La llave de seguridad es incorrecta.');
         }
 
-        $recurso = Recurso::findOrFail($id);
-        return view('painel.recursos.edit')->withRecurso($recurso);;
-        
+        $recurso = Recurso::find($id);
+        if (!$recurso) {
+             return redirect()->route('recurso.index')->with('status', 'Lo sentimos, no se ha podido establecer la información del recurso');
+        }
+
+        return view('painel.recursos.edit', compact('recurso'));
     }
 
     /**
@@ -83,7 +98,13 @@ class RecursoController extends Controller
      */
     public function update(Request $request, Recurso $recurso)
     {
-        //
+        $update = Recurso::find($recurso->id)->update($request->all());
+
+        if ($update) {
+            return redirect()->route('recurso.index')->with('success', 'O recurso foi alterado com sucesso!');
+        } else {
+            return redirect()->route('recurso.index')->with('status', 'Ocurrio algum erro, e não foi alterado!!');
+        }
     }
 
     /**

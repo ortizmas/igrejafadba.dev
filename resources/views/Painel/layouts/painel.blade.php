@@ -19,6 +19,7 @@
   {{-- <link rel="stylesheet" href="fonts/ionicons.min.css"> --}}
   <!-- Theme style -->
   <link href="{{ asset('assets/painel/dist/css/AdminLTE.min.css') }}" rel="stylesheet">
+  <link href="{{ asset('assets/painel/dist/css/style.css') }}" rel="stylesheet">
   {{-- <link rel="stylesheet" href="dist/css/AdminLTE.min.css"> --}}
   <!-- AdminLTE Skins. Choose a skin from the css/skins
     folder instead of downloading all of them to reduce the load. -->
@@ -600,6 +601,7 @@
  <script src="{{ asset('assets/painel/bootstrap/js/bootstrap.min.js') }}"></script>
  <script src="{{ asset('assets/painel/plugins/slimScroll/jquery.slimscroll.min.js') }}"></script>
  <script src="{{ asset('assets/painel/plugins/fastclick/fastclick.js') }}"></script>
+ <script src="{{ asset('assets/painel/plugins/validate/validador.js') }}"></script>
  <script src="{{ asset('assets/painel/dist/js/app.min.js') }}"></script>
 
 

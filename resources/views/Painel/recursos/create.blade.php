@@ -1,7 +1,7 @@
 @extends('painel.layouts.painel')
 
 @section('content')
-    <div class="container">
+    <div class="container-fluid shell-view">
         @if (session('success'))
             <div class="alert alert-success">
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -17,111 +17,93 @@
             </div>
         @endif
         <div class="row">
-            <div class="col-md-8 col-md-offset-2">
-                <div class="panel panel-default">
-                    <div class="panel-heading">Register</div>
-
-                    <div class="panel-body">
-                        <form class="form-horizontal" method="POST" action="{{ route('users.store') }}">
-                            {{ csrf_field() }}
-
-                            <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
-                                <label for="name" class="col-md-4 control-label">Name</label>
-
-                                <div class="col-md-6">
-                                    <input id="name" type="text" class="form-control" name="name" value="{{ old('name') }}" required autofocus>
-
-                                    @if ($errors->has('name'))
-                                        <span class="help-block">
-                                            <strong>{{ $errors->first('name') }}</strong>
-                                        </span>
-                                    @endif
-                                </div>
-                            </div>
-
-                            <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-                                <label for="email" class="col-md-4 control-label">E-Mail Address</label>
-
-                                <div class="col-md-6">
-                                    <input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}" required>
-
-                                    @if ($errors->has('email'))
-                                        <span class="help-block">
-                                            <strong>{{ $errors->first('email') }}</strong>
-                                        </span>
-                                    @endif
-                                </div>
-                            </div>
-
-                            <div class="form-group{{ $errors->has('perfil_id') ? ' has-error' : '' }}">
-                                <label for="perfil_id" class="col-md-4 control-label">Perfil</label>
-
-                                <div class="col-md-6">
-                                    <select name="perfil_id" class="form-control">
-                                        @foreach ($perfils as $perfil)
-                                            <option value="{{ $perfil->id }}">{{ $perfil->rol }}</option>
-                                        @endforeach
-                                    </select>
-                                    {{-- <input id="perfil_id" type="perfil_id" class="form-control" name="perfil_id" value="{{ old('perfil_id') }}" required> --}}
-
-                                    @if ($errors->has('perfil_id'))
-                                        <span class="help-block">
-                                            <strong>{{ $errors->first('perfil_id') }}</strong>
-                                        </span>
-                                    @endif
-                                </div>
-                            </div>
-
-                            <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
-                                <label for="password" class="col-md-4 control-label">Password</label>
-
-                                <div class="col-md-6">
-                                    <input id="password" type="password" class="form-control" name="password" required>
-
-                                    @if ($errors->has('password'))
-                                        <span class="help-block">
-                                            <strong>{{ $errors->first('password') }}</strong>
-                                        </span>
-                                    @endif
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="password-confirm" class="col-md-4 control-label">Confirm Password</label>
-
-                                <div class="col-md-6">
-                                    <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required>
-                                </div>
-                            </div>
-
-                            <div class="form-group{{ $errors->has('activo') ? ' has-error' : '' }}">
-                                <label for="activo" class="col-md-4 control-label">Estado</label>
-
-                                <div class="col-md-6">
-                                    <select id="activo" name="activo" class="form-control" >
-                                        <option value="1">Ativo</option>
-                                        <option value="0">Inativo</option>
-                                    </select>
-
-                                    @if ($errors->has('activo'))
-                                        <span class="help-block">
-                                            <strong>{{ $errors->first('activo') }}</strong>
-                                        </span>
-                                    @endif
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <div class="col-md-6 col-md-offset-4">
-                                    <button type="submit" class="btn btn-primary">
-                                        Register
-                                    </button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
+                <div class="page-header container-fluid">    
+                    <div class="row">
+                        <div class="col-md-8">
+                            <h4>
+                                Recursos del sistema | Actualizar recurso
+                            </h4>
+                        </div>
+                        <div class="col-md-4" id="opt-process"></div>
+                    </div>       
                 </div>
-            </div>
+
+                {!! Form::open(['method' => 'POST', 'route' => ['recurso.store'] , 'class' => 'js-validate js-remote form-vertical', 'data-to'=> 'shell-content', 'novalidate'=> 'novalidate']) !!}
+
+                {{-- {{ Form::model($recurso, ['files' => true,'id'=>'edit_form','class' =>'form-horizontal','accept-charset' => "UTF-8"]) }} --}}
+
+                    <div class="col-md-4">
+                        <div class='form-group'>
+                             {!! Form::label('modulo', 'Módulo:') !!}
+                             {!! Form::text('modulo', null, ['class' => 'form-control']) !!}
+                             @if ($errors->has('modulo'))
+                                <span class="help-block">
+                                    <strong>{{ $errors->first('modulo') }}</strong>
+                                </span>
+                            @endif
+                        </div>
+                        {{-- <div class='form-group'>
+                             {!! Form::label('email', 'Email:') !!}
+                             {!! Form::email('email', null, ['class' => 'form-control']) !!}
+                        </div> --}}
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class='form-group'>
+                             {!! Form::label('controlador', 'Controlador:') !!}
+                             {!! Form::text('controlador', null, ['class' => 'form-control input-required', 'required'=> 'required']) !!}
+                             <p class="help-block"><small class="help-error"></small></p>
+                             @if ($errors->has('controlador'))
+                                <span class="help-block">
+                                    <strong>{{ $errors->first('controlador') }}</strong>
+                                </span>
+                            @endif
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class='form-group'>
+                             {!! Form::label('accion', 'Accion:') !!}
+                             {!! Form::text('accion', null, ['class' => 'form-control']) !!}
+                        </div>
+                    </div>
+                        
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div class='form-group'>
+                                 {!! Form::label('descripcion', 'Descripcion:') !!}
+                                 {!! Form::textarea('descripcion', null, ['class' => 'form-control input-required', 'required'=> 'required']) !!}
+                                <p class="help-block"><small class="help-error"></small></p>
+                                 @if ($errors->has('descripcion'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('descripcion') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                           {{--  <div class='form-group'>
+                                 {!! Form::label('city', 'City:') !!}
+                                 {!! Form::text('city', null, ['class' => 'form-control']) !!}
+                            </div>
+                            <div class='form-group'>
+                                 {!! Form::label('state', 'State:') !!}
+                                 {!! Form::text('state', null, ['class' => 'form-control']) !!}
+                            </div>
+                            <div class='form-group'>
+                                 {!! Form::label('zip', 'Zip:') !!}
+                                 {!! Form::text('zip', null, ['class' => 'form-control']) !!}
+                            </div> --}}
+                        </div>
+                    </div>
+                        
+                    <div class="row">
+                        <div class="form-actions">
+                            <a href="{{ route('recurso.index') }}" class="btn btn-info"><i class="fa fa-arrow-left"></i> Voltar</a>
+                            {!! Form::submit('Criar Recurso', ['class' => 'btn btn-success text-bold']) !!}
+                            {{ Form::reset('Limpar', ['class' => 'btn btn-danger text-bold']) }}
+                        </div>
+                    </div>
+                    
+                {{ Form::close() }}
         </div>
     </div>
 @endsection
