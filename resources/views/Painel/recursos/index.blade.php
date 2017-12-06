@@ -32,100 +32,59 @@
                         <?php $counter++; ?>
                     <?php endforeach; ?>                
                 </ul>
-                <!-- /.box-header -->
-                <div class="box-body">
-                    <div id="example1_wrapper" class="dataTables_wrapper form-inline dt-bootstrap">
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <div class="dataTables_length" id="example1_length">
-                                    <label>Show 
-                                        <select name="example1_length" aria-controls="example1" class="form-control input-sm">
-                                            <option value="10">10</option><option value="25">25</option>
-                                            <option value="50">50</option><option value="100">100</option>
-                                        </select> 
-                                        entries
-                                    </label>
-                                </div>
-                            </div>
-                            <div class="col-sm-6">
-                                <div id="example1_filter" class="dataTables_filter">
-                                    <label>Search:
-                                        <input type="search" class="form-control input-sm" placeholder="" aria-controls="example1">
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <table id="example1" class="table table-bordered table-striped dataTable" role="grid" aria-describedby="example1_info">
-                                    <thead>
-                                        <tr role="row">
-                                            <th class="sorting_asc" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Rendering engine: activate to sort column descending">NUM</th>
-                                            <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Browser: activate to sort column ascending">CONTROLADOR</th>
-                                            <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending">AÇÃO</th>
-                                            <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending">DESCRIÇÃO</th>
-                                            <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending">Estado</th>
-                                            <th colspan="2" class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="CSS grade: activate to sort column ascending">Ação</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach ($recursos as $key => $recurso)
-                                            <tr role="row" class="odd">
-                                                <td class="sorting_1">{{ $recurso->id }}</td>
-                                                <td>{{ $recurso->controlador }}</td>
-                                                <td>{{ $recurso->accion }}</td>
-                                                <td>{{ $recurso->descripcion }}</td>
-                                                {{-- <td>{{ $recurso->perfil->rol }}</td> --}}
+
+                <div class="tab-content">
+                    <?php $counter = 1; ?>
+                    <?php foreach($recursos as $modulo): ?>
+                        <div class="tab-pane <?php echo ($counter==1) ? 'active' : '';?>" id="<?php echo 'tab'.$counter; ?>">
+                            <?php $recurso = \App\Models\Recurso::hasRecurso($modulo->modulo, $order='recurso.controlador'); ?>
+                            <table class="table table-bordered table-hover table-striped table-condensed table-responsive">
+                                <thead>
+                                    <tr>
+                                        <th>NUM</th>                        
+                                        <th data-order="controlador">CONTROLADOR</th>
+                                        <th data-order="accion">ACCION</th>
+                                        <th >DESCRIPCION</th>
+                                        <th data-order="activo">ESTADO</th>
+                                        <th class="btn-actions col-blocked text-center">ACCIONES</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php if($recurso) { ?>
+                                        <?php $counter2 = 1; ?>
+                                        <?php foreach($recurso as $row): ?>
+                                            <?php $key_upd = MyFunction::setKey($row->id, 'upd_recurso'); ?>
+                                            <?php $key_ina = MyFunction::setKey($row->id, 'inactivar_recurso'); ?>
+                                            <?php $key_rea = MyFunction::setKey($row->id, 'reactivar_recurso'); ?>
+                                            <?php $key_del = MyFunction::setKey($row->id, 'eliminar_recurso'); ?>
+                                            <tr>
+                                                <td><?php echo $counter2; ?></td>                                
+                                                <td><?php echo empty($row->controlador) ? '' : $row->controlador; ?></td>
+                                                <td><?php echo empty($row->accion) ? '' : $row->accion; ?></td>
+                                                <td><?php echo $row->descripcion; ?></td>
+                                                <td><?php echo ($row->activo == \App\Models\Recurso::ACTIVO) ? '<span class="label label-success">Activo</span>' : '<span class="label label-important">Bloqueado</span>'; ; ?></td>
                                                 <td>
-                                                    <form>
-                                                        <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
-                                                        <div class="togglebutton"  data-list-boolean ="{!! 'recursos_'.$model .'_'.$recurso->id !!}" data-list-name ="activo" >
-                                                            <i class=" transitioned fa fa-2x fa-check text-success pointer {{ ($recurso->activo==1) ? '' : 'hidden' }}"></i>
-                                                            <i class="transitioned fa fa-2x fa-close text-error pointer {{ ($recurso->activo==0) ? '' : 'hidden' }}"></i>
-                                                        </div>
-                                                    </form>
+                                                    <?php if(empty($recurso->custom) && Auth::user()->perfil_id != \App\Models\Perfil::SUPER_USUARIO) { ?>
+                                                        <?php echo MyFunction::buttonTable('Editar recurso', "", array('class'=>'btn-disabled'), 'warning', 'fa-edit'); ?>
+                                                        <?php echo MyFunction::buttonTable('Bloquear recurso', "", array('class'=>'btn-disabled'), 'success', 'fa-flag'); ?>
+                                                        <?php echo MyFunction::buttonTable('Eliminar recurso', "", array('class'=>'btn-disabled'), 'danger', 'fa-ban'); ?>
+                                                    <?php } else { ?>                   
+                                                         <?php echo MyFunction::buttonTable('Modificar recurso', "recurso/$key_upd/edit", null, 'warning', 'fa-edit'); ?>   
+                                                    <?php } ?>
                                                 </td>
-                                                <td><a class="btn btn-info btn-xs" href="{{ route('recurso.edit', $recurso->id) }}" title="Edit"><i class="fa fa-edit" ></i></a></td>
-                                                <td>
-                                                    <form>
-                                                        <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
-                                                        <a href="{{  MyFunction::ma_get_admin_delete_url($recurso) }}" class="btn btn-danger btn-xs" data-role="delete-item">
-                                                            <i class="fa fa-trash"></i> 
-                                                        </a>
-                                                    </form>
-                                                </td>
-                                                
-                                                
                                             </tr>
-                                        @endforeach
-                                    </tbody>
-                                    <tfoot>
-                                        <tr>
-                                            <th rowspan="1" colspan="1">Id</th>
-                                            <th rowspan="1" colspan="1">Nome</th>
-                                            <th rowspan="1" colspan="1">Email)</th>
-                                            <th rowspan="1" colspan="1">Perfil</th>
-                                            <th rowspan="1" colspan="1">Estado</th>
-                                            <th rowspan="1" colspan="2">Ação</th>
-                                        </tr>
-                                    </tfoot>
-                                </table>
-                            </div>
+                                            <?php $counter2++; ?>
+                                        <?php endforeach; ?>
+                                    <?php } ?>
+                                </tbody>
+                            </table>
+                            
                         </div>
-                        <div class="row">
-                            <div class="col-sm-5">
-                                <div class="dataTables_info" id="example1_info" role="status" aria-live="polite">{{ $count }} <b>Registros</b></div>
-                            </div>
-                            <div class="col-sm-7">
-                                <div class="dataTables_paginate paging_simple_numbers" id="example1_paginate">
-                                    <ul class="pagination">
-                                        {{-- {{ $recursos->links() }} --}}
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                        <?php $counter++; ?>
+                    <?php endforeach; ?>
                 </div>
+                <!-- /.box-header -->
+                
           </div>
         </div>
       </div>

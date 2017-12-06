@@ -20,7 +20,7 @@ class Recurso extends Model
     /**
      * Constante para definir un recurso como inactivo
      */
-    const INACTIVO = 2;
+    const INACTIVO = 0;
     
     /**
      * Constante para identificar el comodín *
@@ -49,23 +49,60 @@ class Recurso extends Model
      * @param type $page
      * @return type
      */
-    public static function getListadoRecursoPorModulo($estado='todos', $order='') {                           
-        //$conditions = 'recurso.id IS NOT NULL AND recurso.id > 1'; 
-        //$whereData = array(array('recurso.id', 'IS NOT NULL') , array('recurso.id' ,'>','1'));   
+    public static function getListadoRecursoPorModulo($estado='todos', $order='') {                
         $whereData = [
 		    ['recurso.id' ,'>','1']
 		];          
-        if($estado!='todos') {
-
-            //$conditions.= ($estado==self::ACTIVO) ? " AND activo=".self::ACTIVO : " AND activo=".self::INACTIVO;
-            $whereData.= ($estado==self::ACTIVO) ? " AND activo=".self::ACTIVO : " AND activo=".self::INACTIVO;
-        }  
-
-        //return $this->find("conditions: $conditions", "group: recurso.modulo", "order: recurso.modulo ASC");
+        if( $estado != 'todos' ) {
+            if ( $estado == self::ACTIVO ) {
+                $whereData = [
+                    ['recurso.id' ,'>','1'],
+                    ['recurso.activo' ,'>', self::ACTIVO]
+                ]; 
+            } else {
+                $whereData = [
+                    ['recurso.id' ,'>','1'],
+                    ['recurso.activo', '=', self::INACTIVO]
+                ];
+            }
+        }
         return DB::table('recurso')
         	->whereNotNull('recurso.id')
         	->where($whereData)
-        	->orderBy('recurso.modulo', 'asc')
+            ->groupBy('recurso.modulo')
+        	->orderBy($order, 'asc')
         	->get();
+    }
+
+    /**
+     * Método para listar los recursos por módulos
+     * @param type $modulo
+     * @param type $order
+     * @return type
+     */
+    public static function getRecursosPorModulo($modulo, $order='recurso.controlador') {
+        // $conditions = "recurso.modulo = '$modulo'";
+        // $order = $this->get_order($order, 'id', array(            
+        //     'controlador' => array(
+        //         'ASC' => 'controlador ASC, accion ASC',
+        //         'DESC' => 'controlador DESC, accion DESC'
+        //     ),
+        //     'accion' => array(
+        //         'ASC' => 'accion ASC, controlador ASC',
+        //         'DESC' => 'accion DESC, controlador DESC'
+        //     )
+        // ));        
+        //return $this->find("conditions: $conditions", "order: $order");
+        return DB::table('recurso')
+                    ->where('recurso.modulo', $modulo)
+                    ->orderBy($order, 'asc')
+                    ->get();
+    }
+
+    public static function hasRecurso($modulo, $order='recurso.controlador') {
+        return DB::table('recurso')
+                    ->where('recurso.modulo', $modulo)
+                    ->orderBy($order, 'asc')
+                    ->get();
     }
 }

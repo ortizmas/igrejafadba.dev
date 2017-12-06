@@ -14,14 +14,16 @@ class RecursoController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index($order='controlador', $page='page.1')
+    public function index($order='recurso.controlador', $page='10')
     {
         //$recursos = Recurso::paginate();
         $recursos = Recurso::getListadoRecursoPorModulo('todos', $order, $page);
+        $recurso = Recurso::getRecursosPorModulo($recursos[0]->modulo, $order);
         $model = MyFunction::className(Recurso::class);
         $count = $recursos->count();
-        return view('painel.recursos.index', compact('recursos', 'model', 'count'));
+        return view('painel.recursos.index', compact('recursos','recurso', 'model', 'count'));
     }
+
 
     /**
      * Show the form for creating a new resource.
@@ -61,9 +63,13 @@ class RecursoController extends Controller
      * @param  \App\Recurso  $recurso
      * @return \Illuminate\Http\Response
      */
-    public function edit(Recurso $recurso)
+    public function edit($key)
     {
-        //
+        if(!$id = MyFunction::getKey($key, 'upd_recurso', 'int')) {
+            dd($key);
+        }
+        dd(PUBLIC_PATH);
+        
     }
 
     /**
