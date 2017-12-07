@@ -602,6 +602,8 @@
  <script src="{{ asset('assets/painel/plugins/slimScroll/jquery.slimscroll.min.js') }}"></script>
  <script src="{{ asset('assets/painel/plugins/fastclick/fastclick.js') }}"></script>
  <script src="{{ asset('assets/painel/plugins/validate/validador.js') }}"></script>
+ <!-- Validator Bootstrap 3.3.7 -->
+ {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/1000hz-bootstrap-validator/0.11.5/validator.min.js"></script> --}}
  <script src="{{ asset('assets/painel/dist/js/app.min.js') }}"></script>
 
 

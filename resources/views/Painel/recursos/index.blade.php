@@ -38,7 +38,7 @@
                     <?php foreach($recursos as $modulo): ?>
                         <div class="tab-pane <?php echo ($counter==1) ? 'active' : '';?>" id="<?php echo 'tab'.$counter; ?>">
                             <?php $recurso = \App\Models\Recurso::hasRecurso($modulo->modulo, $order='recurso.controlador'); ?>
-                            <table class="table table-bordered table-hover table-striped table-condensed table-responsive">
+                            <table class="table table-bordered table-hover table-striped table-condensed table-responsive" data-toggle="dataTable" data-form="deleteForm">
                                 <thead>
                                     <tr>
                                         <th>NUM</th>                        
@@ -62,14 +62,22 @@
                                                 <td><?php echo empty($row->controlador) ? '' : $row->controlador; ?></td>
                                                 <td><?php echo empty($row->accion) ? '' : $row->accion; ?></td>
                                                 <td><?php echo $row->descripcion; ?></td>
-                                                <td><?php echo ($row->activo == \App\Models\Recurso::ACTIVO) ? '<span class="label label-success">Activo</span>' : '<span class="label label-important">Bloqueado</span>'; ; ?></td>
+                                                <td><?php echo ($row->activo == \App\Models\Recurso::ACTIVO) ? '<span class="label label-success">Activo</span>' : '<span class="label label-danger">Bloqueado</span>'; ; ?></td>
                                                 <td>
                                                     <?php if(empty($recurso->custom) && Auth::user()->perfil_id != \App\Models\Perfil::SUPER_USUARIO) { ?>
                                                         <?php echo MyFunction::buttonTable('Editar recurso', "", array('class'=>'btn-disabled'), 'warning', 'fa-edit'); ?>
                                                         <?php echo MyFunction::buttonTable('Bloquear recurso', "", array('class'=>'btn-disabled'), 'success', 'fa-flag'); ?>
                                                         <?php echo MyFunction::buttonTable('Eliminar recurso', "", array('class'=>'btn-disabled'), 'danger', 'fa-ban'); ?>
                                                     <?php } else { ?>                   
-                                                         <?php echo MyFunction::buttonTable('Modificar recurso', "recurso/$key_upd/edit", null, 'warning', 'fa-edit'); ?>   
+                                                        <?php echo MyFunction::buttonTable('Modificar recurso', "recurso/$key_upd/edit", null, 'warning', 'fa-edit'); ?>
+                                                        <?php if($row->activo == \App\Models\Recurso::ACTIVO) { ?>
+                                                            <?php echo MyFunction::buttonTable('Bloquear recurso', "recurso/estado/inactivar/$key_ina", null, 'success', 'fa-flag'); ?>
+                                                        <?php } else { ?>
+                                                            <?php echo MyFunction::buttonTable('Reactivar recurso', "recurso/estado/reactivar/$key_rea", null, 'danger', 'fa-flag'); ?>
+                                                        <?php } ?>
+                                                        <?php /*echo MyFunction::buttonTable('Eliminar recurso', url("painel/recurso/destroy", $key_del) , array('class'=>'js-confirm', 'data-role'=>'delete-item', 'msg-title'=>'Eliminar recurso', 'msg'=>'Está seguro de eliminar este recurso? <br />Recuerda que esta operación no se puede reversar.'), 'danger', 'fa-ban'); */?>  
+                                                        <a href="{{ route('recurso.delete', $key_del) }}" class="btn js-url js-spinner js-link btn-small btn-danger js-confirm text-bold" data-role="delete-item"><i class="btn-icon-only fa fa-ban"></i></a> 
+                                                        
                                                     <?php } ?>
                                                 </td>
                                             </tr>
@@ -87,12 +95,11 @@
                 
           </div>
         </div>
-      </div>
+    </div>
 </div>
 </section>
 @endsection
 
 @section('script')
-    {{-- expr --}}
     <script src="{{ asset('js/script.js') }}"></script>
 @endsection

@@ -12,7 +12,7 @@
 	 */
 	$number = isset($_SERVER['PATH_INFO']) ? strlen(urldecode($_SERVER['PATH_INFO'])) - 1 : 0;
 	$number += empty($_SERVER['QUERY_STRING']) ? 0 : strlen(urldecode($_SERVER['QUERY_STRING'])) + 1;
-	define('PUBLIC_PATH', substr(urldecode($_SERVER['REQUEST_URI']), 0, -$number));
+	define('PUBLIC_PATH', substr(urldecode(@$_SERVER['REQUEST_URI']), 0, -$number));
 
 	return [
 		'your-returned-const' => 'Your returned constant value!'
