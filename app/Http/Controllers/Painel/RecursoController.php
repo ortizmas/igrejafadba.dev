@@ -167,7 +167,7 @@ class RecursoController extends Controller
         }      
 
         try {
-            dd($key);
+            dd($id);
             if($recurso->find($id)->delete()) {
                 $request->session()->flash('success','El recurso se ha eliminado correctamente!');
             } else {
