@@ -20,7 +20,9 @@ class RecursoController extends Controller
     {
         //$recursos = Recurso::paginate();
         $recursos = Recurso::getListadoRecursoPorModulo('todos', $order, $page);
-        $recurso = Recurso::getRecursosPorModulo($recursos[0]->modulo, $order);
+        
+        //$recurso = Recurso::getRecursosPorModulo($recursos[0]->modulo, $order);
+
         $model = MyFunction::className(Recurso::class);
         $count = $recursos->count();
         return view('painel.recursos.index', compact('recursos','recurso', 'model', 'count'));
@@ -155,8 +157,9 @@ class RecursoController extends Controller
      * @param  \App\Recurso  $recurso
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request, Recurso $recurso, $key)
+    public function destroy(Request $request, Recurso $recurso, $key='')
     {
+
         if(!$id = MyFunction::getKey($key, 'eliminar_recurso', 'int')) {
             return redirect()->route('recurso.index')->with('status', 'Acceso denegado. La llave de seguridad es incorrecta.');
         }
@@ -167,7 +170,6 @@ class RecursoController extends Controller
         }      
 
         try {
-            dd($id);
             if($recurso->find($id)->delete()) {
                 $request->session()->flash('success','El recurso se ha eliminado correctamente!');
             } else {

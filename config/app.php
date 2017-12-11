@@ -236,6 +236,9 @@ return [
 
         //Helpers
         'MyFunction' => App\Helpers\MyFunction::class,
+        //Controllers Btn
+        'Btn' => App\Http\Controllers\Painel\Btn::class,
+
 
     ],
 
