@@ -31,13 +31,25 @@ class RecursoController extends Controller
     public function lista($order='recurso.controlador', $page='10')
     {
         $recursos = new Recurso();
-        $recursos = $recursos->getListadoRecursoPorModulo('todos', $order, $page);
-        
+        $data = array();
+        $i = -1;
+        //$recursos = $recursos->getListadoRecursoPorModulo('todos', $order, $page);
         //$recurso = Recurso::getRecursosPorModulo($recursos[0]->modulo, $order);
+        /**$data = array();
+        $i = -1;
+        foreach($this->categorias->findAll() as $categoria){
+            $data['cs'][++$i]['categoria']  = $categoria;
+            $data['cs'][$i]['subcategoria'] = $this->subcategorias->findByIdCategoria($categoria->id);
+        }*/
 
-        $model = MyFunction::className(Recurso::class);
-        $count = $recursos->count();
-        return view('painel.recursos.lista', compact('recursos','recurso', 'model', 'count'));
+        foreach ($recursos->getListadoRecursoPorModulo('todos', $order, $page) as $modulo) {
+            $data['rec'][++$i]['modulo'] = $modulo;
+            $data['rec'][$i]['recursos'] = $recursos->hasRecurso($modulo->modulo, $order);
+        }
+        $data['model'] = MyFunction::className(Recurso::class);
+        $data['count'] = $recursos->count();
+       // return view('painel.recursos.lista', compact('recursos','recurso', 'model', 'count'));
+       return view('painel.recursos.lista', $data);
     }
 
 

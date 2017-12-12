@@ -121,3 +121,8 @@ Route::get('usuarios/nuevo', function(){
 	return "Criar novo usuario";
 });
 
+Route::get('rotas', function(){
+	$root = get_class(File::getFacadeRoot());
+	var_dump($root);
+});
+

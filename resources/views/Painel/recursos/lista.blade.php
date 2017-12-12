@@ -31,17 +31,16 @@
 
                     <ul class="nav nav-tabs nav-justified">
                         <?php $counter = 1; ?>
-                        <?php foreach($recursos as $recurso): ?>
-                            <li class="<?php echo ($counter==1) ? 'active' : '';?>"><a href="<?php echo '#tab'.$counter; ?>" data-toggle="tab"><?php echo empty($recurso->modulo) ? 'Sin módulos' : MyFunction::ucfirst($recurso->modulo); ?></a></li>
+                        <?php foreach($rec as $recurso): ?>
+                            <li class="<?php echo ($counter==1) ? 'active' : '';?>"><a href="<?php echo '#tab'.$counter; ?>" data-toggle="tab"><?php echo empty($recurso['modulo']->modulo) ? 'Sin módulos' : MyFunction::ucfirst($recurso['modulo']->modulo); ?></a></li>
                             <?php $counter++; ?>
                         <?php endforeach; ?>                
                     </ul>
-
                     <div class="tab-content">
                         <?php $counter = 1; ?>
-                        <?php foreach($recursos as $modulo): ?>
+                        <?php foreach($rec as $modulo): ?>
                             <div class="tab-pane <?php echo ($counter==1) ? 'active' : '';?>" id="<?php echo 'tab'.$counter; ?>">
-                                <?php $recurso = MyLib::hasRecurso($modulo->modulo, $order='recurso.controlador'); ?>
+                                <?php /*$recurso = MyLib::hasRecurso($modulo->modulo, $order='recurso.controlador');*/ ?>
                                 <table class="table table-bordered table-hover table-striped table-condensed table-responsive" data-toggle="dataTable" data-form="deleteForm">
                                     <thead>
                                         <tr>
@@ -56,7 +55,7 @@
                                     <tbody>
                                         <?php if($recurso) { ?>
                                             <?php $counter2 = 1; ?>
-                                            <?php foreach($recurso as $row): ?>
+                                            <?php foreach($modulo['recursos'] as $row): ?>
                                                 <?php $key_upd = MyFunction::setKey($row->id, 'upd_recurso'); ?>
                                                 <?php $key_ina = MyFunction::setKey($row->id, 'inactivar_recurso'); ?>
                                                 <?php $key_rea = MyFunction::setKey($row->id, 'reactivar_recurso'); ?>
@@ -94,6 +93,7 @@
                             <?php $counter++; ?>
                         <?php endforeach; ?>
                     </div>
+                    
                 </div>
             </div>
         </div>
