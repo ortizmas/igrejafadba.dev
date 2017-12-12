@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use DB;
+use Illuminate\Database\Eloquent\Model;
+
 
 class Recurso extends Model
 {
@@ -51,7 +52,7 @@ class Recurso extends Model
      * @param type $page
      * @return type
      */
-    public static function getListadoRecursoPorModulo($estado='todos', $order='') {                
+    public function getListadoRecursoPorModulo($estado='todos', $order='') {                
         $whereData = [
 		    ['recurso.id' ,'>','1']
 		];          
@@ -82,26 +83,14 @@ class Recurso extends Model
      * @param type $order
      * @return type
      */
-    public static function getRecursosPorModulo($modulo, $order='recurso.controlador') {
-        // $conditions = "recurso.modulo = '$modulo'";
-        // $order = $this->get_order($order, 'id', array(            
-        //     'controlador' => array(
-        //         'ASC' => 'controlador ASC, accion ASC',
-        //         'DESC' => 'controlador DESC, accion DESC'
-        //     ),
-        //     'accion' => array(
-        //         'ASC' => 'accion ASC, controlador ASC',
-        //         'DESC' => 'accion DESC, controlador DESC'
-        //     )
-        // ));        
-        //return $this->find("conditions: $conditions", "order: $order");
+    public function getRecursosPorModulo($modulo, $order='recurso.controlador') {
         return DB::table('recurso')
                     ->where('recurso.modulo', $modulo)
                     ->orderBy($order, 'asc')
                     ->get();
     }
 
-    public static function hasRecurso($modulo, $order='recurso.controlador') {
+    public function hasRecurso($modulo, $order='recurso.controlador') {
         return DB::table('recurso')
                     ->where('recurso.modulo', $modulo)
                     ->orderBy($order, 'asc')

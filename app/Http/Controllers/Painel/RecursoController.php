@@ -18,14 +18,26 @@ class RecursoController extends Controller
      */
     public function index($order='recurso.controlador', $page='10')
     {
-        //$recursos = Recurso::paginate();
-        $recursos = Recurso::getListadoRecursoPorModulo('todos', $order, $page);
+        $recursos = new Recurso();
+        $recursos = $recursos->getListadoRecursoPorModulo('todos', $order, $page);
         
         //$recurso = Recurso::getRecursosPorModulo($recursos[0]->modulo, $order);
 
         $model = MyFunction::className(Recurso::class);
         $count = $recursos->count();
         return view('painel.recursos.index', compact('recursos','recurso', 'model', 'count'));
+    }
+
+    public function lista($order='recurso.controlador', $page='10')
+    {
+        $recursos = new Recurso();
+        $recursos = $recursos->getListadoRecursoPorModulo('todos', $order, $page);
+        
+        //$recurso = Recurso::getRecursosPorModulo($recursos[0]->modulo, $order);
+
+        $model = MyFunction::className(Recurso::class);
+        $count = $recursos->count();
+        return view('painel.recursos.lista', compact('recursos','recurso', 'model', 'count'));
     }
 
 

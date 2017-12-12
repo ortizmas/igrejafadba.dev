@@ -234,8 +234,12 @@ return [
         'Form' => Collective\Html\FormFacade::class,
         'Html' => Collective\Html\HtmlFacade::class,
 
+        //Libraries
+        'MyLib' => App\Libraries\MyLib::class,
+
         //Helpers
         'MyFunction' => App\Helpers\MyFunction::class,
+
         //Controllers Btn
         'Btn' => App\Http\Controllers\Painel\Btn::class,
 

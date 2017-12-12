@@ -1,12 +1,17 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Painel;
 
 use App\Models\Menu;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class MenuController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -15,6 +20,7 @@ class MenuController extends Controller
     public function index()
     {
         //
+        return "Hello index menu";
     }
 
     /**
@@ -25,6 +31,7 @@ class MenuController extends Controller
     public function create()
     {
         //
+        return "Hello create menu";
     }
 
     /**
