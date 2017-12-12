@@ -5,8 +5,11 @@
 /vendor
 /.idea
 /.vagrant
+/app/.DS_Store
+/app/Models/.DS_Store
 Homestead.json
 Homestead.yaml
 npm-debug.log
 yarn-error.log
 .env
+.DS_Store
