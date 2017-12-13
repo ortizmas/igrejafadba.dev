@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Auth;
 use MyFunction;
+use MyLib;
 
 class RecursoController extends Controller
 {
@@ -84,6 +85,8 @@ class RecursoController extends Controller
      */
     public function create()
     {
+        //$s = "modulo, ''";
+        //MyLib::get(trim('Painel', '/'), 'string');
         return view('painel.recursos.create');
     }
 
@@ -100,9 +103,23 @@ class RecursoController extends Controller
             'descripcion' => 'required|max:150',
         ]);
 
-        $create = Recurso::create($request->all());
+        //$create = Recurso::create($request->all());
+        if(empty($request->accion)) {
+            $request->accion   = '*';
+        }
+        $recurso = [
+            'modulo' => MyLib::get(trim($request->modulo, '/'), 'string'),
+            'controlador' => MyLib::get(trim($request->controlador, '/'), 'string'),
+            'accion' =>  MyLib::get(trim($request->accion, '/'), 'string'),
+            'recurso' => trim($request->modulo.'/'.$request->controlador.'/'.$request->accion.'/', '/'),
+            'descripcion' => MyLib::get($request->descripcion, 'string'),
+            'activo' => Recurso::ACTIVO,
+            'custom' => $request->custom,
+        ];
 
-        if ($create) {
+        $save = Recurso::insert($recurso);
+
+        if ($save) {
             return redirect()->route('recurso.index')->with('success', 'O recurso foi criado com sucesso!');
         } else {
             return redirect()->route('recurso.index')->with('status', 'Ocurrio algum erro, e o recurso nçao foi criado!!');

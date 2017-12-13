@@ -72,11 +72,11 @@
                                                             <?php echo MyFunction::buttonTable('Bloquear recurso', "", array('class'=>'btn-disabled'), 'success', 'fa-flag'); ?>
                                                             <?php echo MyFunction::buttonTable('Eliminar recurso', "", array('class'=>'btn-disabled'), 'danger', 'fa-ban'); ?>
                                                         <?php } else { ?>                   
-                                                            <?php echo MyFunction::buttonTable('Modificar recurso', "recurso/$key_upd/edit", null, 'warning', 'fa-edit'); ?>
+                                                            <?php echo MyFunction::buttonTable('Modificar recurso', "$key_upd/edit", null, 'warning', 'fa-edit'); ?>
                                                             <?php if($row->activo == MyLib::getActivo()) { ?>
-                                                                <?php echo MyFunction::buttonTable('Bloquear recurso', "recurso/estado/inactivar/$key_ina", null, 'success', 'fa-flag'); ?>
+                                                                <?php echo MyFunction::buttonTable('Bloquear recurso', "estado/inactivar/$key_ina", null, 'success', 'fa-flag'); ?>
                                                             <?php } else { ?>
-                                                                <?php echo MyFunction::buttonTable('Reactivar recurso', "recurso/estado/reactivar/$key_rea", null, 'danger', 'fa-flag'); ?>
+                                                                <?php echo MyFunction::buttonTable('Reactivar recurso', "estado/reactivar/$key_rea", null, 'danger', 'fa-flag'); ?>
                                                             <?php } ?>
                                                             
                                                             <a href="{{ route('recurso.delete', $key_del) }}" class="btn js-url js-spinner js-link btn-small btn-danger js-confirm text-bold form-delete" ><i class="btn-icon-only fa fa-ban"></i></a>

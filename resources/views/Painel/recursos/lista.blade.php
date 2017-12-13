@@ -100,12 +100,105 @@
 
         <!-- /.Modal para confirmação ao excluir row-->
         {!! Btn::delete() !!}
-
     </section>
+
+    <div class="container">
+        <div class="panel panel-primary" style="width:750px;margin:0px auto">
+
+          <div class="panel-heading">Bootstrap Validation example using validator.js</div>
+          <div class="panel-body">
+
+            <form data-toggle="validator" role="form">
+
+              <div class="form-group">
+                  <label class="control-label" for="inputName">Name</label>
+                  <input class="form-control" data-error="Please enter name field." id="inputName" placeholder="Name"  type="text" required />
+                  <div class="help-block with-errors"></div>
+              </div>
+
+              <div class="form-group">
+                  <label class="control-label" for="inputSobrenome">Sobrenome</label>
+                  <input class="form-control" data-error="Este campo é requerido." id="inputSobrenome" placeholder="Sobrenome"  type="text" required />
+                  <div class="help-block with-errors"></div>
+              </div>
+
+              <div class="form-group">
+                <label for="inputEmail" class="control-label">Email</label>
+                <input type="email" class="form-control" id="inputEmail" placeholder="Email" required>
+                <div class="help-block with-errors"></div>
+              </div>
+
+             {{--  <div class="form-group">
+                <label for="inputPassword" class="control-label">Password</label>
+                <div class="form-group">
+                  <input type="password" data-minlength="5" class="form-control" id="inputPassword" data-error="must enter minimum of 5 characters" placeholder="Password" required>
+                  <div class="help-block with-errors"></div>
+                </div>
+              </div> --}}
+
+              <div class="form-group">
+                  <label class="control-label" for="inputName">BIO</label>
+                  <textarea class="form-control" data-error="Please enter BIO field." id="inputName" placeholder="Cina Saffary" required=""></textarea>
+                  <div class="help-block with-errors"></div>
+              </div>
+
+                <div class="form-group has-feedback">
+                    <label for="inputTwitter" class="control-label">Twitter</label>
+                    <div class="input-group">
+                        <span class="input-group-addon">@</span>
+                        <input type="text" pattern="^[_A-z0-9]{1,}$" maxlength="15" class="form-control" id="inputTwitter" placeholder="1000hz" required>
+                    </div>
+                    <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+                    <div class="help-block with-errors"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="inputPassword" class="control-label">Password</label>
+                    <div class="form-inline row">
+                      <div class="form-group col-sm-6">
+                        <input type="password" data-minlength="6" class="form-control" id="inputPassword" placeholder="Password" required>
+                        <div class="help-block">Minimum of 6 characters</div>
+                      </div>
+                      <div class="form-group col-sm-6">
+                        <input type="password" class="form-control" id="inputPasswordConfirm" data-match="#inputPassword" data-match-error="Whoops, these don't match" placeholder="Confirm" required>
+                        <div class="help-block with-errors"></div>
+                      </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="radio">
+                      <label>
+                        <input type="radio" name="underwear" required>
+                        Boxers
+                      </label>
+                    </div>
+                    <div class="radio">
+                      <label>
+                        <input type="radio" name="underwear" required>
+                        Briefs
+                      </label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="checkbox">
+                      <label>
+                        <input type="checkbox" id="terms" data-error="Before you wreck yourself" required>
+                        Check yourself
+                      </label>
+                      <div class="help-block with-errors"></div>
+                    </div>
+                </div>
+
+              <div class="form-group">
+                  <button class="btn btn-primary" type="submit">
+                      Submit
+                  </button>
+              </div>
+            </form>
+
+          </div>
+        </div>
+    </div>
 @endsection
 
-@section('script')
-
-    <script src="{{ asset('js/script.js') }}"></script>
-
-@endsection
