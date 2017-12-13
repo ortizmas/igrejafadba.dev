@@ -43,6 +43,7 @@ Route::group(['prefix' => 'painel', 'middleware' => 'auth'], function(){
 	Route::get('recurso/estado/{tipo?}/{id?}', 'Painel\RecursoController@estado');
 	Route::get('recurso/{id}/delete', ['as' => 'recurso.delete', 'uses' => 'Painel\RecursoController@destroy']);
 	$this->get('recurso/lista', 'Painel\RecursoController@lista');
+	$this->get('recurso/listaEloquent', 'Painel\RecursoController@listaEloquent');
 	Route::resource('recurso', 'Painel\RecursoController');
 	// Route::get('recurso/destroy/{id?}', 'Painel\RecursoController@destroy');
 	//Route::get('recursos/{model?}/{id?}', 'Painel\RecursoController@estado');

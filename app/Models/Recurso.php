@@ -69,12 +69,29 @@ class Recurso extends Model
                 ];
             }
         }
-        return DB::table('recurso')
-        	->whereNotNull('recurso.id')
-        	->where($whereData)
+
+        //Eloquent
+        $recurso = Recurso::whereNotNull('recurso.id')
+            ->where($whereData)
             ->groupBy('recurso.modulo')
-        	->orderBy($order, 'asc')
-        	->get();
+            ->orderBy($order, 'asc')
+            ->get();
+        return $recurso;
+
+        //Query Builder
+        // return DB::table('recurso')
+        // 	->whereNotNull('recurso.id')
+        // 	->where($whereData)
+        //     ->groupBy('recurso.modulo')
+        // 	->orderBy($order, 'asc')
+        // 	->get();
+    }
+
+    public function getRecursos($modulo, $order='recurso.controlador') {
+        return DB::table('recurso')
+                    ->where('recurso.modulo', $modulo)
+                    ->orderBy($order, 'asc')
+                    ->get();
     }
 
     /**

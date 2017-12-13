@@ -28,13 +28,14 @@ class RecursoController extends Controller
         return view('painel.recursos.index', compact('recursos','recurso', 'model', 'count'));
     }
 
-    public function lista($order='recurso.controlador', $page='10')
+    public function lista($estado='todos', $order='recurso.controlador', $page='10')
     {
-        $recursos = new Recurso();
+        $recursos = new Recurso;
         $data = array();
         $i = -1;
-        //$recursos = $recursos->getListadoRecursoPorModulo('todos', $order, $page);
         //$recurso = Recurso::getRecursosPorModulo($recursos[0]->modulo, $order);
+        
+
         /**$data = array();
         $i = -1;
         foreach($this->categorias->findAll() as $categoria){
@@ -51,6 +52,29 @@ class RecursoController extends Controller
        // return view('painel.recursos.lista', compact('recursos','recurso', 'model', 'count'));
        return view('painel.recursos.lista', $data);
     }
+
+    public function listaEloquent($estado='todos', $order='recurso.controlador', $page='10')
+    {
+        $recursos = new Recurso;
+        $data['rec'] = $recursos->getListadoRecursoPorModulo('todos', $order, $page);
+        // foreach ($recurso as $modulo) {
+
+        //     $recursosPorModulo = $modulo->getRecursos($modulo->modulo);
+        // }
+
+        // $data = array();
+        // $i = -1;
+        // foreach ($recursos->getListadoRecursoPorModulo('todos', $order, $page) as $modulo) {
+        //     $data['rec'][++$i]['modulo'] = $modulo;
+        //     $data['rec'][$i]['recursos'] = $recursos->hasRecurso($modulo->modulo, $order);
+        // }
+        $data['model'] = MyFunction::className(Recurso::class);
+        $data['count'] = $recursos->count();
+       // return view('painel.recursos.lista', compact('recursos','recurso', 'model', 'count'));
+       return view('painel.recursos.listaEloquent', $data);
+    }
+
+
 
 
     /**
