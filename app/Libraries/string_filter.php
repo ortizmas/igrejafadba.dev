@@ -22,7 +22,8 @@
 	        $string = filter_var($s, FILTER_SANITIZE_STRING);
 	        $string = strip_tags((string) $string);
 	        $string = stripslashes((string) $string);
-	        $string = trim($string);
+	        $string = ucfirst($string);
+	        $string = strtolower($string);
 	        return $string;
 	   }
 

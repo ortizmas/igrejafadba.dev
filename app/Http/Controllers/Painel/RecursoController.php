@@ -86,7 +86,7 @@ class RecursoController extends Controller
     public function create()
     {
         //$s = "modulo, ''";
-        //MyLib::get(trim('Painel', '/'), 'string');
+        //dd(MyLib::get(trim('Painel', '/'), 'string'));
         return view('painel.recursos.create');
     }
 
@@ -107,12 +107,19 @@ class RecursoController extends Controller
         if(empty($request->accion)) {
             $request->accion   = '*';
         }
+
+        $request->modulo = MyLib::get(trim($request->modulo, '/'), 'string');
+        $request->controlador = MyLib::get(trim($request->controlador, '/'), 'string');
+        $request->accion =  MyLib::get(trim($request->accion, '/'), 'string');
+        $request->recurso = trim($request->modulo.'/'.$request->controlador.'/'.$request->accion.'/', '/');
+        $request->descripcion = MyLib::get($request->descripcion, 'string');
+
         $recurso = [
-            'modulo' => MyLib::get(trim($request->modulo, '/'), 'string'),
-            'controlador' => MyLib::get(trim($request->controlador, '/'), 'string'),
-            'accion' =>  MyLib::get(trim($request->accion, '/'), 'string'),
-            'recurso' => trim($request->modulo.'/'.$request->controlador.'/'.$request->accion.'/', '/'),
-            'descripcion' => MyLib::get($request->descripcion, 'string'),
+            'modulo' => $request->modulo,
+            'controlador' => $request->controlador,
+            'accion' =>  $request->accion,
+            'recurso' => $request->recurso,
+            'descripcion' => $request->descripcion,
             'activo' => Recurso::ACTIVO,
             'custom' => $request->custom,
         ];
