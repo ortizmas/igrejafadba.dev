@@ -102,7 +102,7 @@ class RecursoController extends Controller
             'controlador' => 'required|max:45',
             'descripcion' => 'required|max:150',
         ]);
-
+        
         //$create = Recurso::create($request->all());
         if(empty($request->accion)) {
             $request->accion   = '*';
@@ -174,7 +174,34 @@ class RecursoController extends Controller
      */
     public function update(Request $request, Recurso $recurso)
     {
-        $update = Recurso::find($recurso->id)->update($request->all());
+        $request->validate([
+            'controlador' => 'required|max:45',
+            'descripcion' => 'required|max:150',
+        ]);
+
+        //$create = Recurso::create($request->all());
+        if(empty($request->accion)) {
+            $request->accion   = '*';
+        }
+
+        $request->modulo = MyLib::get(trim($request->modulo, '/'), 'string');
+        $request->controlador = MyLib::get(trim($request->controlador, '/'), 'string');
+        $request->accion =  MyLib::get(trim($request->accion, '/'), 'string');
+        $request->recurso = trim($request->modulo.'/'.$request->controlador.'/'.$request->accion.'/', '/');
+        $request->descripcion = MyLib::get($request->descripcion, 'string');
+
+        $recursoUpdate = [
+            'modulo' => $request->modulo,
+            'controlador' => $request->controlador,
+            'accion' =>  $request->accion,
+            'recurso' => $request->recurso,
+            'descripcion' => $request->descripcion,
+            'custom' => $request->custom,
+        ];
+
+        $update = Recurso::find($recurso->id)->update($recursoUpdate);
+
+        //$update = Recurso::find($recurso->id)->update($request->all());
 
         if ($update) {
             return redirect()->route('recurso.index')->with('success', 'O recurso foi alterado com sucesso!');
