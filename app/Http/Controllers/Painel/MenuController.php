@@ -19,8 +19,10 @@ class MenuController extends Controller
      */
     public function index()
     {
-        //
-        return "Hello index menu";
+        $menu = new Menu;
+        $data['menus'] = $menu->getListadoEdicion(Menu::BACKEND);
+        $data['front'] = $menu->getListadoEdicion(Menu::FRONTEND);
+        return view('painel.menus.index', $data);
     }
 
     /**
