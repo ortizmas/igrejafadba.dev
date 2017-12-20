@@ -32,6 +32,15 @@ class Menu extends Model
      */
     const FRONTEND = 2;
 
+    public function parent()
+    {
+        return $this->belongsTo('App\Models\menu', 'menu_id');
+    }
+ 
+    public function children()
+    {
+        return $this->hasMany('App\Models\menu', 'menu_id');
+    }
 
     public function recurso()
     {
@@ -112,12 +121,12 @@ class Menu extends Model
      */
     public function getMenusPorPadre($padre, $order='') {
         
-        $query = Menu::from('menu as pai')
-                        ->select('pai.*')
-                        ->leftJoin('recurso', 'pai.recurso_id', '=', 'recurso.id')
-                        ->leftJoin('menu', 'menu.menu_id', '=', 'pai.id')
-                        ->where('menu.id', $padre)
-                        ->groupBy('pai.id')
+        $query = Menu::from('menu')
+                        ->select('menu.*', 'pai.nome AS padre', 'pai.posicion AS pai_posicion', 'recurso.recurso')
+                        ->leftJoin('recurso', 'menu.recurso_id', '=', 'recurso.id')
+                        ->leftJoin('menu as pai', 'pai.menu_id', '=', 'menu.id')
+                        ->where('menu.menu_id', $padre)
+                        ->groupBy('menu.id')
                         ->orderBy('pai.posicion', 'DESC')
                         ->get();
         return $query;
@@ -135,4 +144,61 @@ class Menu extends Model
                         ->get();
         return $query;
     }
+
+    /**
+     * Método para obtener el listado de los menús del sistema
+     * @param type $estado
+     * @param type $order
+     * @param type $page
+     * @return type
+     */
+    public function getListadoMenu($estado='todos', $order='', $page=0) {
+        // $columns = 'menu.*, (padre.menu) AS padre, (padre.posicion) AS padre_posicion, recurso.recurso';
+        // $join = 'LEFT JOIN recurso ON recurso.id = menu.recurso_id ';
+        // $join.= 'LEFT JOIN menu AS padre ON padre.id = menu.menu_id ';
+        // $conditions = 'menu.id IS NOT NULL';
+        // if($estado!='todos') {
+        //     $conditions.= ($estado==self::ACTIVO) ? " AND menu.activo=".self::ACTIVO : " AND menu.activo=".self::INACTIVO;
+        // }
+
+        // $order = $this->get_order($order, 'padre_posicion', array(
+        //     'posicion' => array(
+        //         'ASC'  => 'padre_posicion ASC, menu.posicion ASC',
+        //         'DESC' => 'padre_posicion DESC, menu.posicion DESC'
+        //     ),
+        //     'padre' => array(
+        //         'ASC'  => 'padre ASC, padre_posicion ASC, menu.posicion ASC',
+        //         'DESC' => 'padre DESC, padre_posicion DESC, menu.posicion DESC'
+        //     ),
+        //     'menu' => array(
+        //         'ASC'  => 'padre ASC, menu ASC, padre_posicion ASC, menu.posicion ASC',
+        //         'DESC' => 'padre DESC, menu DESC, padre_posicion DESC, menu.posicion DESC'
+        //     ),
+        //     'visibilidad' => array(
+        //         'ASC'  => 'padre.visibilidad ASC, menu.visibilidad ASC, menu ASC, padre_posicion ASC, menu.posicion ASC',
+        //         'DESC' => 'padre.visibilidad DESC, menu.visibilidad DESC, padre DESC, menu DESC, padre_posicion DESC, menu.posicion DESC'
+        //     ),
+        //     'activo' => array(
+        //         'ASC'  => 'menu.activo ASC, padre_posicion ASC, menu.posicion ASC',
+        //         'DESC' => 'menu.activo DESC, menu.visibilidad DESC, padre DESC, menu DESC, padre_posicion DESC, menu.posicion DESC'
+        //     )
+        // ));
+
+        // if($page) {
+        //     return $this->paginated("columns: $columns", "join: $join", "conditions: $conditions", "order: $order", "page: $page");
+        // }
+        // return $this->find("columns: $columns", "join: $join", "conditions: $conditions", "order: $order");
+
+        $query = Menu::from('menu')
+                        ->select('menu.*', 'pai.nome AS padre', 'pai.posicion AS pai_posicion', 'recurso.recurso')
+                        ->leftJoin('recurso', 'menu.recurso_id', '=', 'recurso.id')
+                        ->leftJoin('menu as pai', 'pai.menu_id', '=', 'menu.id')
+                        ->whereNotNull('menu.id')
+                        ->groupBy('menu.id')
+                        ->orderBy('pai.posicion', 'DESC')
+                        ->get();
+        return $query;
+    }
+
+    
 }

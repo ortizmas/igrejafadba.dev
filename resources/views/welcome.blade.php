@@ -90,6 +90,40 @@
                     <a href="https://github.com/laravel/laravel">GitHub</a>
                 </div>
             </div>
+
+
+        </div>
+
+        <div class="container">
+            <nav class="navbar navbar-default" role="navigation">
+                <ul class="nav navbar-nav navbar-left">
+                    @foreach($categories as $item)
+                        @if($item->children->count() > 0)
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{$item->nome}}<b class="caret"></b></a>
+                                <ul class="dropdown-menu">
+                                    @foreach($item->children as $submenu)
+                                        @if($submenu->children->count() > 0)
+                                            <li class="dropdown">
+                                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{$submenu->nome}}--{{ $submenu->recurso->id }}<b class="caret"></b></a>
+                                                <ul class="dropdown-menu">
+                                                    @foreach($submenu->children as $treemenu)
+                                                    <li><a href="#">{{$treemenu->nome}}-{{ $treemenu->recurso->id }}</a></li>
+                                                    @endforeach
+                                                </ul>
+                                            </li>
+                                        @else
+                                            <li><a href="#">{{$submenu->nome}}-{{ $submenu->recurso->id }}</a></li>
+                                        @endif
+                                    @endforeach
+                                </ul>
+                            </li>
+                        @else
+                            <li><a href="">{{$item->nome}}--{{ $item->recurso->id }}</a></li>
+                        @endif
+                    @endforeach
+                </ul>
+            </nav>
         </div>
     </body>
 </html>

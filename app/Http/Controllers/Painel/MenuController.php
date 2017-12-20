@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Painel;
 
 use App\Models\Menu;
+use App\Models\Recurso;
+use MyFunction;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -22,7 +24,16 @@ class MenuController extends Controller
         $menu = new Menu;
         $data['menus'] = $menu->getListadoEdicion(Menu::BACKEND);
         $data['front'] = $menu->getListadoEdicion(Menu::FRONTEND);
+        $data['categories'] = Menu::with('children')->where('menu_id','=', NULL)->get();
         return view('painel.menus.index', $data);
+    }
+
+    public function lista()
+    {
+        $menu = new Menu;
+        $data['menus'] = $menu->getListadoEdicion(Menu::BACKEND);
+        $data['front'] = $menu->getListadoEdicion(Menu::FRONTEND);
+        return view('painel.menus.lista', $data);
     }
 
     /**
@@ -64,9 +75,21 @@ class MenuController extends Controller
      * @param  \App\Menu  $menu
      * @return \Illuminate\Http\Response
      */
-    public function edit(Menu $menu)
+    public function edit($key)
     {
-        //
+        if(!$id = MyFunction::getKey($key, 'upd_menu', 'int')) {
+            return redirect()->route('menu.index')->with('status', 'Acceso denegado. La llave de seguridad es incorrecta.');
+        }
+
+        $menu = Menu::find($id);
+        if (!$menu) {
+            return redirect()->route('menu.index')->with('status', 'Lo sentimos, no se ha podido establecer la información del menu');
+        }
+        //$menus = Menu::pluck('nome', 'id')->all();
+        $menus = $menu->getListadoMenu($estado='todos', $order='', $page=0);
+        $recursos = Recurso::whereNotNull('accion')->pluck('recurso', 'id')->all();
+
+        return view('painel.menus.create', compact('menu', 'menus', 'recursos'));
     }
 
     /**
@@ -90,5 +113,18 @@ class MenuController extends Controller
     public function destroy(Menu $menu)
     {
         //
+    }
+
+    public function plusOne($x=0)
+    {
+        if($x<10)
+        {
+            echo ++$x, "<br />";
+            self::plusOne($x);
+        }
+        else
+        {
+            echo 'Finished! <br />';
+        }
     }
 }

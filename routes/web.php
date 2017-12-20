@@ -73,12 +73,28 @@ Route::group(['prefix' => 'painel', 'middleware' => 'auth'], function(){
 	Route::group(['as' => 'menu.', 'prefix' => 'menus'], function()
 	{
 		Route::get('', ['as' => 'index', 'uses' => 'Painel\MenuController@index']);
+		Route::get('lista', ['as' => 'lista', 'uses' => 'Painel\MenuController@lista']);
 		Route::get('criar', ['as' => 'create', 'uses' => 'Painel\MenuController@create']);
 		Route::post('salvar', ['as' => 'store', 'uses' => 'Painel\MenuController@store']);
-		Route::get('{$id}/editar', ['as' => 'edit', 'uses' => 'Painel\MenuController@edit']);
-		Route::post('{$id}/atualizar', ['as' => 'update', 'uses' => 'Painel\MenuController@update']);
-		Route::get('{$id}/remover', ['as' => 'destroy', 'uses' => 'Painel\MenuController@destroy']);
+		Route::get('{id}/editar', ['as' => 'edit', 'uses' => 'Painel\MenuController@edit']);
+		Route::post('{id}/atualizar', ['as' => 'update', 'uses' => 'Painel\MenuController@update']);
+		Route::get('{id}/remover', ['as' => 'destroy', 'uses' => 'Painel\MenuController@destroy']);
 	});
+
+
+	Route::get('recursiveMenu',function(){
+		$categories = App\Models\Menu::with('children')->where('menu_id','=', NULL)->get();
+		/*$categories = App\Models\Menu::with('children')->from('menu')
+                        ->select('menu.*', 'pai.nome AS padre', 'pai.posicion AS pai_posicion', 'recurso.recurso')
+                        ->leftJoin('recurso', 'menu.recurso_id', '=', 'recurso.id')
+                        ->leftJoin('menu as pai', 'pai.menu_id', '=', 'menu.id')
+                        ->where('menu.menu_id','=', NULL)
+                        ->groupBy('menu.id')
+                        ->orderBy('pai.posicion', 'DESC')
+                        ->get();*/
+		//dd($categories);
+		return view('welcome',['categories'=>$categories]);
+});
 
 	//PainelController
 	Route::get('/', 'Painel\PainelController@index');
