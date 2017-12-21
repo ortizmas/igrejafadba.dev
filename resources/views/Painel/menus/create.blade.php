@@ -49,7 +49,7 @@
                             <div class='form-group'>
                                 {!! Form::label('menu_id', 'Menú Pái:') !!}
                                 {{-- {!! Form::select('menu_id', $menus->pluck('nome'), $menus->pluck('id'), ['class' => 'form-control input-required', 'required'=> 'required']) !!} --}}
-                                <select class="form-control" name="item_id">
+                                <select class="form-control" name="menu_id">
                                     @if ($menu)
                                         <option value="{{ $menu->id }}">{{ $menu->nome }}</option>
                                     @else
@@ -71,8 +71,19 @@
 
                         <div class="col-md-4">
                             <div class='form-group'>
-                                 {!! Form::label('recurso_id', 'Recurso:') !!}
-                                 {!! Form::select('recurso_id', $recursos, null, ['class' => 'form-control']) !!}
+                                {!! Form::label('recurso_id', 'Recurso:') !!}
+                                {{-- {!! Form::select('recurso_id', $recursos, null, ['class' => 'form-control']) !!} --}}
+                                <select class="form-control" name="recurso_id" id="menu_recurso_id">
+                                    @if ($menu)
+                                        <option value="{{ $menu->id }}">{{ $menu->url }}</option>
+                                    @else
+                                        <option value="0">Ninguno</option>
+                                    @endif
+                                    
+                                    @foreach($recursos as $recurso)
+                                      <option value="{{$recurso->id}}">{{$recurso->recurso['recurso'] }}</option>
+                                    @endforeach
+                                </select>
                             </div>
                         </div>
                     </div>
@@ -80,38 +91,38 @@
                     <div class="row">
                         <div class="col-md-4">
                             <div class='form-group'>
-                                 {!! Form::label('descripcion', 'Descripcion:') !!}
-                                 {!! Form::text('descripcion', null, ['class' => 'form-control input-required', 'required'=> 'required']) !!}
+                                 {!! Form::label('posicion', 'Posicion:') !!}
+                                 {!! Form::text('posicion', null, ['class' => 'form-control input-required', 'required'=> 'required']) !!}
                                 <p class="help-block"><small class="help-error"></small></p>
-                                 @if ($errors->has('descripcion'))
+                                 @if ($errors->has('posicion'))
                                     <span class="help-block">
-                                        <strong>{{ $errors->first('descripcion') }}</strong>
+                                        <strong>{{ $errors->first('posicion') }}</strong>
                                     </span>
                                 @endif
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class='form-group'>
-                                 {!! Form::label('city', 'City:') !!}
-                                 {!! Form::text('city', null, ['class' => 'form-control']) !!}
+                                 {!! Form::label('icono', 'Icono a mostrar:') !!}
+                                 {!! Form::text('icono', null, ['class' => 'form-control']) !!}
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class='form-group'>
-                                 {!! Form::label('state', 'State:') !!}
-                                 {!! Form::text('state', null, ['class' => 'form-control']) !!}
+                                 {!! Form::label('url', 'Url:') !!}
+                                 {!! Form::text('url', null, ['class' => 'form-control', 'id' => 'menu_url']) !!}
                             </div>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-4">
                             <div class='form-group'>
-                                 {!! Form::label('descripcion', 'Descripcion:') !!}
-                                 {!! Form::text('descripcion', null, ['class' => 'form-control input-required', 'required'=> 'required']) !!}
+                                 {!! Form::label('visibilidad', 'Visibilidade:') !!}
+                                 {!! Form::select('visibilidad', array('1' => 'Backend', '2' => 'Frontend'), '1', ['class' => 'form-control input-required', 'required'=> 'required']) !!}
                                 <p class="help-block"><small class="help-error"></small></p>
-                                 @if ($errors->has('descripcion'))
+                                 @if ($errors->has('visibilidad'))
                                     <span class="help-block">
-                                        <strong>{{ $errors->first('descripcion') }}</strong>
+                                        <strong>{{ $errors->first('visibilidad') }}</strong>
                                     </span>
                                 @endif
                             </div>
@@ -134,4 +145,12 @@
 @section('script')
     <!-- Para validar formulario exemplo em view lista -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/1000hz-bootstrap-validator/0.11.5/validator.min.js"></script>
+    <script type="text/javascript" >
+        $(function(){
+            $("#menu_recurso_id").on('change',function(){
+                var recurso = $('option:selected',this).text();
+                $("#menu_url").val(recurso.replace('/*','/'));
+            });
+        });
+    </script>
 @endsection

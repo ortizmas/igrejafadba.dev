@@ -32,6 +32,8 @@ class Menu extends Model
      */
     const FRONTEND = 2;
 
+    protected $fillable = ['menu_id', 'recurso_id', 'nome', 'url', 'posicion', 'icono', 'activo', 'visibilidad', 'custom'];
+
     public function parent()
     {
         return $this->belongsTo('App\Models\menu', 'menu_id');

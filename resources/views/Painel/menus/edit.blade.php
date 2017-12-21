@@ -28,81 +28,126 @@
                     </div>       
                 </div>
 
-                {!! Form::model($recurso, ['method' => 'PATCH', 'route' => ['recurso.update', $recurso->id]]) !!}
-
-                {{-- {{ Form::model($recurso, ['files' => true,'id'=>'edit_form','class' =>'form-horizontal','accept-charset' => "UTF-8"]) }} --}}
-
-                    <fieldset>
-                            <!-- Nav tabs -->
-                            <ul class="nav nav-tabs" role="tablist">
-                                <li role="presentation" class="active x-big">
-                                    <a href="#main_tab" aria-controls="main_tab" role="tab" data-toggle="tab">
-                                        <i class="fa fa-file-text-o"></i>
-                                        @if( $recurso->modulo!='')
-                                            Edit {{ MyFunction::ucfirst($recurso->modulo) }}
-                                        @elseif( $recurso->controlador!='')
-                                            Edit {{ MyFunction::ucfirst($recurso->controlador) }}
-                                        @endif
-                                    </a>
-                                </li>
-                            </ul>
-                    </fieldset>
-
-                    <div class="col-md-4">
-                        <div class='form-group'>
-                             {!! Form::label('modulo', 'Módulo:') !!}
-                             {!! Form::text('modulo', null, ['class' => 'form-control']) !!}
+                {!! Form::model($menu, ['method' => 'PATCH', 'route' => ['menu.update', $menu->id]]) !!}
+                    <div class="row">
+                    
+                        <div class="col-md-4">
+                            <div class='form-group'>
+                                 {!! Form::label('nome', 'Nome menu:') !!}
+                                 {!! Form::text('nome', null, ['class' => 'form-control']) !!}
+                                 @if ($errors->has('nome'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('nome') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
                         </div>
-                        {{-- <div class='form-group'>
-                             {!! Form::label('email', 'Email:') !!}
-                             {!! Form::email('email', null, ['class' => 'form-control']) !!}
-                        </div> --}}
-                    </div>
 
-                    <div class="col-md-4">
-                        <div class='form-group'>
-                             {!! Form::label('controlador', 'Controlador:') !!}
-                             {!! Form::text('controlador', null, ['class' => 'form-control']) !!}
+                        <div class="col-md-4">
+                            <div class='form-group'>
+                                {!! Form::label('menu_id', 'Menú Pái:') !!}
+                                {{-- {!! Form::select('menu_id', $menus->pluck('nome'), $menus->pluck('id'), ['class' => 'form-control input-required', 'required'=> 'required']) !!} --}}
+                                <select class="form-control" name="menu_id">
+                                    @if ($menu)
+                                        <option value="{{ $menu->menu_id }}">{{ $menu->nome }}</option>
+                                    @endif
+
+                                    <option value=" ">Ninguno</option>
+                                    @foreach($menus as $item)
+                                      <option value="{{$item->id}}">{{$item->nome}}</option>
+                                    @endforeach
+                                </select>
+                                 <p class="help-block"><small class="help-error"></small></p>
+                                 @if ($errors->has('menu_id'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('menu_id') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="col-md-4">
-                        <div class='form-group'>
-                             {!! Form::label('accion', 'Accion:') !!}
-                             {!! Form::text('accion', null, ['class' => 'form-control']) !!}
+                        <div class="col-md-4">
+                            <div class='form-group'>
+                                {!! Form::label('recurso_id', 'Recurso:') !!}
+                                {!! Form::select('recurso_id', array('' => 'Ninguno', $recursos), null, ['class' => 'form-control', 'id' => 'menu_recurso_id']) !!}
+                                {{-- <select class="form-control" name="recurso_id" id="menu_recurso_id">
+                                    @if ($menu)
+                                        <option value="{{ $menu->id }}">{{ $menu->url }}</option>
+                                    @else
+                                        <option value="0">Ninguno</option>
+                                    @endif
+                                    
+                                    @foreach($recursos as $recurso)
+                                      <option value="{{$recurso->id}}">{{$recurso->recurso }}</option>
+                                    @endforeach
+                                </select> --}}
+                            </div>
                         </div>
                     </div>
                         
                     <div class="row">
-                        <div class="col-md-8">
+                        <div class="col-md-4">
                             <div class='form-group'>
-                                 {!! Form::label('descripcion', 'Descripcion:') !!}
-                                 {!! Form::textarea('descripcion', null, ['class' => 'form-control']) !!}
+                                 {!! Form::label('posicion', 'Posicion:') !!}
+                                 {!! Form::text('posicion', null, ['class' => 'form-control input-required', 'required'=> 'required']) !!}
+                                <p class="help-block"><small class="help-error"></small></p>
+                                 @if ($errors->has('posicion'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('posicion') }}</strong>
+                                    </span>
+                                @endif
                             </div>
-                           {{--  <div class='form-group'>
-                                 {!! Form::label('city', 'City:') !!}
-                                 {!! Form::text('city', null, ['class' => 'form-control']) !!}
-                            </div>
+                        </div>
+                        <div class="col-md-4">
                             <div class='form-group'>
-                                 {!! Form::label('state', 'State:') !!}
-                                 {!! Form::text('state', null, ['class' => 'form-control']) !!}
+                                 {!! Form::label('icono', 'Icono a mostrar:') !!}
+                                 {!! Form::text('icono', null, ['class' => 'form-control']) !!}
                             </div>
+                        </div>
+                        <div class="col-md-4">
                             <div class='form-group'>
-                                 {!! Form::label('zip', 'Zip:') !!}
-                                 {!! Form::text('zip', null, ['class' => 'form-control']) !!}
-                            </div> --}}
+                                 {!! Form::label('url', 'Url:') !!}
+                                 {!! Form::text('url', null, ['class' => 'form-control', 'id' => 'menu_url']) !!}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class='form-group'>
+                                 {!! Form::label('visibilidad', 'Visibilidade:') !!}
+                                 {!! Form::select('visibilidad', array('1' => 'Backend', '2' => 'Frontend'), '1', ['class' => 'form-control input-required', 'required'=> 'required']) !!}
+                                <p class="help-block"><small class="help-error"></small></p>
+                                 @if ($errors->has('visibilidad'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('visibilidad') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
                         </div>
                     </div>
                         
                     <div class="row">
                         <div class="form-actions">
-                            <a href="{{ route('recurso.index') }}" class="btn btn-info"><i class="fa fa-arrow-left"></i> Voltar</a>
-                            {!! Form::submit('Update Recurso', ['class' => 'btn btn-success text-bold']) !!}
+                            <a href="{{ route('menu.index') }}" class="btn btn-info"><i class="fa fa-arrow-left"></i> Voltar</a>
+                            {!! Form::submit('Criar Recurso', ['class' => 'btn btn-success text-bold']) !!}
                             {{ Form::reset('Limpar', ['class' => 'btn btn-danger text-bold']) }}
                         </div>
                     </div>
-                    
                 {{ Form::close() }}
         </div>
     </div>
+@endsection
+
+
+@section('script')
+    <!-- Para validar formulario exemplo em view lista -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/1000hz-bootstrap-validator/0.11.5/validator.min.js"></script>
+    <script type="text/javascript" >
+        $(function(){
+            $("#menu_recurso_id").on('change',function(){
+                var recurso = $('option:selected',this).text();
+                $("#menu_url").val(recurso.replace('/*','/'));
+            });
+        });
+    </script>
 @endsection

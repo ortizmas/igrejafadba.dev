@@ -82,14 +82,24 @@ class MenuController extends Controller
         }
 
         $menu = Menu::find($id);
+        if($menu->id == '1'){
+            return redirect()->route('menu.index')->with('status', 'Lo sentimos, este menu não é posivel alterar!!');
+        }
+
         if (!$menu) {
             return redirect()->route('menu.index')->with('status', 'Lo sentimos, no se ha podido establecer la información del menu');
         }
-        //$menus = Menu::pluck('nome', 'id')->all();
-        $menus = $menu->getListadoMenu($estado='todos', $order='', $page=0);
-        $recursos = Recurso::whereNotNull('accion')->pluck('recurso', 'id')->all();
 
-        return view('painel.menus.create', compact('menu', 'menus', 'recursos'));
+        //Listar Menus
+        //$menus = Menu::pluck('nome', 'id')->all();
+        $menus = $menu->getListadoMenu($estado=Recurso::ACTIVO, $order='', $page=0);
+
+        //Listar Recursos
+        $recurso = new Recurso;
+        // $recursos = $recurso->getListaRecursos($estado='todos', $order='', $page=0); 
+        $recursos = $recurso->getListadoRecurso($estado=Recurso::ACTIVO, $order='', $page=0);
+
+        return view('painel.menus.edit', compact('menu', 'menus', 'recursos'));
     }
 
     /**
@@ -99,9 +109,15 @@ class MenuController extends Controller
      * @param  \App\Menu  $menu
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Menu $menu)
+    public function update(Request $request, $id)
     {
-        //
+        $updateMenu = Menu::find($id)->update($request->all());
+
+        if($updateMenu){
+            return redirect()->route('menu.index')->with('success', 'O menu foi atualizado com sucesso!!');
+        } else {
+            return redirect()->route('menu.index')->with('status', 'O menu não foi atualizado tente nova mente!!');
+        }
     }
 
     /**

@@ -77,7 +77,7 @@ Route::group(['prefix' => 'painel', 'middleware' => 'auth'], function(){
 		Route::get('criar', ['as' => 'create', 'uses' => 'Painel\MenuController@create']);
 		Route::post('salvar', ['as' => 'store', 'uses' => 'Painel\MenuController@store']);
 		Route::get('{id}/editar', ['as' => 'edit', 'uses' => 'Painel\MenuController@edit']);
-		Route::post('{id}/atualizar', ['as' => 'update', 'uses' => 'Painel\MenuController@update']);
+		Route::patch('{id}/atualizar', ['as' => 'update', 'uses' => 'Painel\MenuController@update']);
 		Route::get('{id}/remover', ['as' => 'destroy', 'uses' => 'Painel\MenuController@destroy']);
 	});
 

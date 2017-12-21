@@ -113,4 +113,54 @@ class Recurso extends Model
                     ->orderBy($order, 'asc')
                     ->get();
     }
+
+    /**
+     * Método para obtener el listado de los recursos del sistema
+     * @param type $estado
+     * @param type $order
+     * @param type $page
+     * @return type
+     */
+    public function getListadoRecurso($estado='todos', $order='', $page=0) { 
+        //$recursos = Recurso::whereNotNull('accion')->pluck('recurso', 'id')->all();
+        //$recursos = Recurso::where($conditions)->pluck('recurso', 'id')->toArray(); 
+        
+        /*$recursos = \DB::table('recurso')
+                    ->where('id', '!=', NULL)
+                    ->where(function($query) use ($estado){
+                        if ($estado != 'todos') {
+                            if ($estado==Recurso::ACTIVO) {
+                                $query->where('activo','=',Recurso::ACTIVO);
+                            } else {
+                                $query->where('activo','=',Recurso::INACTIVO);
+                            }
+                            //($estado==Recurso::ACTIVO) ? $query->where('activo','=',Recurso::ACTIVO) : $query->where('activo','=',Recurso::INACTIVO);
+                        }
+                    })
+                    ->orderBy('recurso', 'ASC')
+                    ->pluck('recurso', 'id')->toArray();*/  
+                           
+        $query = Recurso::whereNotNull('id');
+                if($estado !='todos')
+                    ($estado==Recurso::ACTIVO) ? $query->where('activo','=',Recurso::ACTIVO) : $query->where('activo','=',Recurso::INACTIVO);
+                $query->orderBy('recurso', 'ASC');
+        $recursos = $query->pluck('recurso', 'id')->toArray();
+        return $recursos;
+    }
+
+    /**
+    * com concatenação de variable
+    */
+    public function getListaRecursos($estado='todos', $order='', $page=0)
+    {
+        $conditions = 'recurso.id IS NOT NULL';                
+        if($estado!='todos') {
+            $conditions.= ($estado==Recurso::ACTIVO) ? " AND activo=".Recurso::ACTIVO : " AND activo=".Recurso::INACTIVO;
+        }
+        $sql = "select * from recurso where {$conditions}";
+
+        $recursos = \DB::select($sql); 
+
+        return $recursos;
+    }
 }
