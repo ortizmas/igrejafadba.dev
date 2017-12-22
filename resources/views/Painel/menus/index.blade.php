@@ -25,7 +25,7 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h4>Contact list
-                            <a href="{{ route('recurso.create') }}" class="btn btn-primary pull-right" style="margin-top: -8px;">Criar novo Menu</a>
+                            <a href="{{ route('menu.create') }}" class="btn btn-primary pull-right" style="margin-top: -8px;">Criar novo Menu</a>
                         </h4>
                     </div>
 
@@ -194,7 +194,7 @@
                                                     <td><?php echo $row->posicion; ?></td>
                                                     <td><?php /*echo $row->padre;*/ ?></td>
                                                     <td><?php echo $row->nome; ?></td>
-                                                    <td><?php echo $row->recurso; ?></td>
+                                                    <td><?php echo $row->recurso->recurso; ?></td>
                                                     <td><?php echo $row->url; ?></td>
                                                     <td><?php echo $row->icono; ?></td>
                                                     <td><?php echo ($row->visibilidad == $menu::BACKEND) ? '<span class="label label-success">Backend</span>' : '<span class="label label-warning">Frontend</span>'; ; ?></td>

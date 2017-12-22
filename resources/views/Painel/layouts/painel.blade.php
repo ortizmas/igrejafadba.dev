@@ -279,10 +279,11 @@
             </span>
         </a>
         <ul class="treeview-menu">
-            <li><a href="{{ url('painel/users') }}"><i class="fa fa-circle-o"></i> Listar Usuarios</a></li>
-            <li><a href="{{ url('painel/perfil') }}"><i class="fa fa-circle-o"></i> Listar Roles</a></li>
-            <li><a href="{{ url('painel/recurso') }}"><i class="fa fa-circle-o"></i> Listar Recurso</a></li>
-            <li><a href="{{ url('painel/permissions') }}"><i class="fa fa-circle-o"></i> Listar Permisos</a></li>
+            <li><a href="{{ url('painel/users') }}"><i class="fa fa-circle-o"></i>Usuarios</a></li>
+            <li><a href="{{ url('painel/perfil') }}"><i class="fa fa-circle-o"></i>Roles</a></li>
+            <li><a href="{{ url('painel/recurso') }}"><i class="fa fa-circle-o"></i>Recurso</a></li>
+            <li><a href="{{ url('painel/menus') }}"><i class="fa fa-circle-o"></i>Menus</a></li>
+            <li><a href="{{ url('painel/permissions') }}"><i class="fa fa-circle-o"></i>Permisos</a></li>
         </ul>
     </li>
     <li class="treeview">

@@ -29,8 +29,8 @@
                 </div>
 
                 {!! Form::model($menu, ['method' => 'PATCH', 'route' => ['menu.update', $menu->id]]) !!}
+
                     <div class="row">
-                    
                         <div class="col-md-4">
                             <div class='form-group'>
                                  {!! Form::label('nome', 'Nome menu:') !!}
@@ -111,6 +111,7 @@
                             </div>
                         </div>
                     </div>
+                    
                     <div class="row">
                         <div class="col-md-4">
                             <div class='form-group'>

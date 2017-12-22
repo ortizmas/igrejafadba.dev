@@ -41,10 +41,19 @@ class MenuController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Menu $menu)
     {
-        //
-        return "Hello create menu";
+
+        //Listar Menus
+        //$menus = Menu::pluck('nome', 'id')->all();
+        $menus = $menu->getListadoMenu($estado=Recurso::ACTIVO, $order='', $page=0);
+
+        //Listar Recursos
+        $recurso = new Recurso;
+        // $recursos = $recurso->getListaRecursos($estado='todos', $order='', $page=0); 
+        $recursos = $recurso->getListadoRecurso($estado=Recurso::ACTIVO, $order='', $page=0);
+
+        return view('painel.menus.create', compact('menu', 'menus', 'recursos'));
     }
 
     /**
@@ -55,7 +64,18 @@ class MenuController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'nome' => 'required',
+            'url' => 'required|unique:menu'
+        ]);
+
+        $save = Menu::create($request->all());
+
+        if ($save) {
+            return redirect()->back()->with('success', 'Menu cadastrado com success!!');
+        } else {
+            return redirect()->back()->with('status', 'Ocurrio algum erro, e o monu não foi criado!!');
+        }
     }
 
     /**
