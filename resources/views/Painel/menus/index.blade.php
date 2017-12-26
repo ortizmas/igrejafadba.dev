@@ -87,13 +87,13 @@
                                                 <td><?php echo ($menu->visibilidad == $menu::BACKEND) ? '<span class="label label-success">Backend</span>' : '<span class="label label-warning">Frontend</span>'; ; ?></td>
                                                 <td><?php echo ($menu->activo == $menu::ACTIVO) ? '<span class="label label-success">Activo</span>' : '<span class="label label-danger">Bloqueado</span>'; ; ?></td>
                                                 <td>
-                                                    <?php echo MyFunction::buttonTable('Modificar menú', "sistema/menus/editar/$key_upd/", null, 'warning', 'fa-edit'); ?>
+                                                    <?php echo MyFunction::buttonTable('Modificar menú', "menus/editar/$key_upd/", null, 'warning', 'fa-edit'); ?>
                                                     <?php if($menu->activo == $menu::ACTIVO) { ?>
-                                                        <?php echo MyFunction::buttonTable('Bloquear menú', "sistema/menus/estado/inactivar/$key_ina/", null, 'success', 'fa-flag'); ?>
+                                                        <?php echo MyFunction::buttonTable('Bloquear menú', "menus/estado/inactivar/$key_ina/", null, 'success', 'fa-flag'); ?>
                                                     <?php } else { ?>
-                                                        <?php echo MyFunction::buttonTable('Reactivar menú', "sistema/menus/estado/reactivar/$key_rea/", null, 'danger', 'fa-flag'); ?>
+                                                        <?php echo MyFunction::buttonTable('Reactivar menú', "menus/estado/reactivar/$key_rea/", null, 'danger', 'fa-flag'); ?>
                                                     <?php } ?>
-                                                    <?php echo MyFunction::buttonTable('Eliminar menú', "sistema/menus/eliminar/$key_del/", array('class'=>'js-confirm', 'confirm-title'=>'Eliminar menú', 'confirm-body'=>'Está seguro de eliminar este menú? <br />Recuerda que esta operación no se puede reversar.'), 'danger', 'fa-ban'); ?>
+                                                    <?php echo MyFunction::buttonTable('Excluir menú', "menus/eliminar/$key_del/", array('class'=>'js-confirm', 'confirm-title'=>'Excluir menú', 'confirm-body'=>'Está seguro de eliminar este menú? <br />Recuerda que esta operación no se puede reversar.'), 'danger', 'fa-ban'); ?>
                                                 </td>
                                             </tr>
                                             <?php $hijos = $menu->getMenusPorPadre($menu->id, $order); ?>
@@ -116,13 +116,13 @@
                                                         <td><?php echo ($hijo->visibilidad == $menu::BACKEND) ? '<span class="label label-success">Backend</span>' : '<span class="label label-warning">Frontend</span>'; ; ?></td>
                                                         <td><?php echo ($hijo->activo == $menu::ACTIVO) ? '<span class="label label-success">Activo</span>' : '<span class="label label-danger">Bloqueado</span>'; ; ?></td>
                                                         <td>
-                                                            <?php echo MyFunction::buttonTable('Modificar menú', "sistema/menus/editar/$key_upd/", null, 'warning', 'fa-edit'); ?>
+                                                            <?php echo MyFunction::buttonTable('Modificar menú', "menus/editar/$key_upd/", null, 'warning', 'fa-edit'); ?>
                                                             <?php if($hijo->activo == $menu::ACTIVO) { ?>
-                                                                <?php echo MyFunction::buttonTable('Bloquear menú', "sistema/menus/estado/inactivar/$key_ina/", null, 'success', 'fa-flag'); ?>
+                                                                <?php echo MyFunction::buttonTable('Bloquear menú', "menus/estado/inactivar/$key_ina/", null, 'success', 'fa-flag'); ?>
                                                             <?php } else { ?>
-                                                                <?php echo MyFunction::buttonTable('Reactivar menú', "sistema/menus/estado/reactivar/$key_rea/", null, 'danger', 'fa-flag'); ?>
+                                                                <?php echo MyFunction::buttonTable('Reactivar menú', "menus/estado/reactivar/$key_rea/", null, 'danger', 'fa-flag'); ?>
                                                             <?php } ?>
-                                                            <?php echo MyFunction::buttonTable('Eliminar menú', "sistema/menus/eliminar/$key_del/", array('class'=>'js-confirm', 'confirm-title'=>'Eliminar menú', 'confirm-body'=>'Está seguro de eliminar este menú? <br />Recuerda que esta operación no se puede reversar.'), 'danger', 'fa-ban'); ?>
+                                                            <?php echo MyFunction::buttonTable('Eliminar menú', "menus/eliminar/$key_del/", array('class'=>'js-confirm', 'confirm-title'=>'Eliminar menú', 'confirm-body'=>'Está seguro de eliminar este menú? <br />Recuerda que esta operación no se puede reversar.'), 'danger', 'fa-ban'); ?>
                                                         </td>
                                                     </tr>     
                                                     <?php $counter2++; ?>
@@ -146,7 +146,7 @@
                             <?php $key_del = MyFunction::setKey($menu->id, 'eliminar_menu'); ?>
                         
                             <div class="tab-pane <?php echo ($counter==1) ? 'active' : '';?>" id="<?php echo 'tab'.$counter; ?>">
-                                <table class="table table-bordered table-hover table-striped table-condensed table-responsive">
+                                <table class="table table-bordered table-hover table-striped table-condensed table-responsive" data-toggle="dataTable" data-form="deleteForm">
                                     <thead>                    
                                         <tr>
                                             <th>NUM</th>
@@ -179,7 +179,7 @@
                                                 <?php } else { ?>
                                                     <?php echo MyFunction::buttonTable('Reactivar menú', "menus/estado/reactivar/$key_rea/", null, 'danger', 'fa-flag'); ?>
                                                 <?php } ?>
-                                                <?php echo MyFunction::buttonTable('Eliminar menú', "menus/$key_del/remover", array('class'=>'js-confirm', 'confirm-title'=>'Eliminar menú', 'confirm-body'=>'Está seguro de eliminar este menú? <br />Recuerda que esta operación no se puede reversar.'), 'danger', 'fa-ban'); ?>
+                                                <?php echo MyFunction::buttonTable('Excluir menú', "menus/$key_del/remover", array('class'=>'js-confirm js-confirm text-bold form-delete', 'confirm-title'=>'Excluir menú'), 'danger', 'fa-ban'); ?>
                                             </td>
                                         </tr>
                                             <?php $counter2 = 1 ?>
@@ -206,7 +206,7 @@
                                                         <?php } else { ?>
                                                             <?php echo MyFunction::buttonTable('Reactivar menú', "menus/estado/reactivar/$key_rea/", null, 'danger', 'fa-flag'); ?>
                                                         <?php } ?>
-                                                        <?php echo MyFunction::buttonTable('Eliminar menú', "menus/eliminar/$key_del/", array('class'=>'js-confirm', 'confirm-title'=>'Eliminar menú', 'confirm-body'=>'Está seguro de eliminar este menú? <br />Recuerda que esta operación no se puede reversar.'), 'danger', 'fa-ban'); ?>
+                                                        <?php echo MyFunction::buttonTable('Excluir menú', "menus/$key_del/remover", array('class'=>'js-confirm js-confirm text-bold form-delete'), 'danger', 'fa-ban'); ?>
                                                     </td>
                                                 </tr>
                                                 <?php $counter3 = 1 ?>
@@ -232,7 +232,7 @@
                                                             <?php } else { ?>
                                                                 <?php echo MyFunction::buttonTable('Reactivar menú', "menus/estado/reactivar/$key_rea/", null, 'danger', 'fa-flag'); ?>
                                                             <?php } ?>
-                                                            <?php echo MyFunction::buttonTable('Eliminar menú', "menus/$key_del/remover", array('class'=>'js-confirm', 'confirm-title'=>'Eliminar menú', 'confirm-body'=>'Está seguro de eliminar este menú? <br />Recuerda que esta operación no se puede reversar.'), 'danger', 'fa-ban'); ?>
+                                                            <?php echo MyFunction::buttonTable('Eliminar menú', "menus/$key_del/remover", array('class'=>'js-confirm fjs-confirm text-bold form-delete'), 'danger', 'fa-ban'); ?>
                                                         </td>
                                                     </tr>    
                                                     <?php $counter3++ ?> 

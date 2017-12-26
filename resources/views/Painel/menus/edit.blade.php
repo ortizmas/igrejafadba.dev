@@ -108,6 +108,12 @@
                             <div class='form-group'>
                                  {!! Form::label('url', 'Url:') !!}
                                  {!! Form::text('url', null, ['class' => 'form-control', 'id' => 'menu_url']) !!}
+                                 <p class="help-block"><small class="help-error"></small></p>
+                                @if ($errors->has('url'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('url') }}</strong>
+                                    </span>
+                                @endif
                             </div>
                         </div>
                     </div>

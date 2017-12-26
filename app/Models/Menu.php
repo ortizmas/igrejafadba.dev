@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use DB;
+use Auth;
 use Illuminate\Database\Eloquent\Model;
 
 class Menu extends Model
@@ -20,7 +21,7 @@ class Menu extends Model
     /**
      * Constante para definir un menú como inactivo
      */
-    const INACTIVO = 2;
+    const INACTIVO = 0;
 
     /**
      * Constante para definir un menú visible en el backend
@@ -200,6 +201,37 @@ class Menu extends Model
                         ->orderBy('pai.posicion', 'DESC')
                         ->get();
         return $query;
+    }
+
+    public function saveMenu($request)
+    {  
+        $this->menu_id = $request['menu_id'];
+        $this->recurso_id = $request['recurso_id']; 
+        $this->nome = $request['nome'];
+        $this->url = $request['url'];
+        $this->posicion = $request['posicion'];
+        $this->icono = $request['icono']; 
+        $this->activo = Menu::ACTIVO; 
+        $this->visibilidad = $request['visibilidad'];
+        $this->custom = (Auth::user()->perfil_id == Perfil::SUPER_USUARIO) ? 0 : 1;
+        $this->save();
+        return TRUE;
+    }
+
+    public function updateMenu($request , $id)
+    {
+        $menu = $this->find($id);
+        $menu->menu_id = $request['menu_id'];
+        $menu->recurso_id = $request['recurso_id']; 
+        $menu->nome = $request['nome'];
+        $menu->url = $request['url'];
+        $menu->posicion = $request['posicion'];
+        $menu->icono = $request['icono']; 
+        $menu->activo = Menu::ACTIVO; 
+        $menu->visibilidad = $request['visibilidad'];
+        $menu->custom = (Auth::user()->perfil_id == Perfil::SUPER_USUARIO) ? 0 : 1;
+        $menu->save();
+        return 1;
     }
 
     

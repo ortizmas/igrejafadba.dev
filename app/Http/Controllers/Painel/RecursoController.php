@@ -274,7 +274,7 @@ class RecursoController extends Controller
             } else {
                 $request->session()->flash('status', 'Lo sentimos, pero este recurso no se puede eliminar.');
             }
-        } catch(KumbiaException $e) {
+        } catch(Exception $e) {
             $request->session()->flash('status','Este recurso no se puede eliminar porque se encuentra relacionado con otro registro.');
         }
 

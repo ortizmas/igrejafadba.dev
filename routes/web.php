@@ -79,6 +79,7 @@ Route::group(['prefix' => 'painel', 'middleware' => 'auth'], function(){
 		Route::get('{id}/editar', ['as' => 'edit', 'uses' => 'Painel\MenuController@edit']);
 		Route::patch('{id}/atualizar', ['as' => 'update', 'uses' => 'Painel\MenuController@update']);
 		Route::get('{id}/remover', ['as' => 'destroy', 'uses' => 'Painel\MenuController@destroy']);
+		Route::get('estado/{tipo?}/{id?}', ['as' => 'destroy', 'uses' => 'Painel\RecursoController@estado']);
 	});
 
 
