@@ -100,7 +100,6 @@
 
         <!-- /.Modal para confirmação ao excluir row-->
         {!! Btn::delete() !!}
-
     </section>
 @endsection
 

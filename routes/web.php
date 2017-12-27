@@ -82,20 +82,13 @@ Route::group(['prefix' => 'painel', 'middleware' => 'auth'], function(){
 		Route::get('estado/{tipo?}/{id?}', ['as' => 'destroy', 'uses' => 'Painel\RecursoController@estado']);
 	});
 
-
-	Route::get('recursiveMenu',function(){
-		$categories = App\Models\Menu::with('children')->where('menu_id','=', NULL)->get();
-		/*$categories = App\Models\Menu::with('children')->from('menu')
-                        ->select('menu.*', 'pai.nome AS padre', 'pai.posicion AS pai_posicion', 'recurso.recurso')
-                        ->leftJoin('recurso', 'menu.recurso_id', '=', 'recurso.id')
-                        ->leftJoin('menu as pai', 'pai.menu_id', '=', 'menu.id')
-                        ->where('menu.menu_id','=', NULL)
-                        ->groupBy('menu.id')
-                        ->orderBy('pai.posicion', 'DESC')
-                        ->get();*/
-		//dd($categories);
-		return view('welcome',['categories'=>$categories]);
-});
+	Route::group(['as' => 'permiso.', 'prefix' => 'permisos'], function()
+	{
+		Route::get('', ['as' => 'index', 'uses' => 'Painel\PermisosController@index']);
+		Route::get('lista', ['as' => 'lista', 'uses' => 'Painel\PermisosController@lista']);
+		Route::get('criar', ['as' => 'create', 'uses' => 'Painel\PermisosController@create']);
+		Route::post('salvar', ['as' => 'store', 'uses' => 'Painel\PermisosController@store']);
+	});
 
 	//PainelController
 	Route::get('/', 'Painel\PainelController@index');
@@ -126,6 +119,20 @@ $this->post('password/reset', 'Auth\ResetPasswordController@reset');
 
 Route::get('/', 'Portal\SiteController@index');
 //Route::get('/roles-permissions',        'Portal\SiteController@rolesPermission');
+
+Route::get('recursiveMenu',function(){
+	$categories = App\Models\Menu::with('children')->where('menu_id','=', NULL)->get();
+	/*$categories = App\Models\Menu::with('children')->from('menu')
+                    ->select('menu.*', 'pai.nome AS padre', 'pai.posicion AS pai_posicion', 'recurso.recurso')
+                    ->leftJoin('recurso', 'menu.recurso_id', '=', 'recurso.id')
+                    ->leftJoin('menu as pai', 'pai.menu_id', '=', 'menu.id')
+                    ->where('menu.menu_id','=', NULL)
+                    ->groupBy('menu.id')
+                    ->orderBy('pai.posicion', 'DESC')
+                    ->get();*/
+	//dd($categories);
+	return view('welcome',['categories'=>$categories]);
+});
 
 Route::get('/func', function () {
     return MyFunction::full_name("John","Doe");

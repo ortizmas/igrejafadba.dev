@@ -118,4 +118,25 @@
 	                    ->where('email_or_phone', $request->input('email_or_phone'))
 	                    ->where('pin_code', $request->input('pin_code'))
 	                    ->first();
+
+	/**
+	 * Count
+	 */
+	$d1s = DB::table('area as a')
+		->select('a.*', DB::raw(' count(b.d1) as num '))
+		->leftJoin('article as b', 'a.id', '=', 'b.d1')
+		->where(['a.level' => 1])
+		->groupBy('a.id')
+		->orderBy('a.level', 'ASC')
+		->orderBy('a.sortid', 'ASC')
+		->get();
+
+	$user = Auth::user();
+	$id = $user->id;
+	$users = DB::table('cuentas as a')
+	        ->join('pasajeros as b', 'b.id', '=', 'a.pasajero_id')
+	        ->where('b.usuarios_id', $id)
+	        ->select(DB::raw('count(*) as user_count'))
+	        ->get();
+	return $users;
 	?>

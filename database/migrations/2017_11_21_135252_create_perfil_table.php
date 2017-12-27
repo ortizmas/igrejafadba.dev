@@ -33,18 +33,19 @@ class CreatePerfilTable extends Migration
             $table->timestamps();
         });
 
-        Schema::create('recurso_perfil', function(Blueprint $table)
+        Schema::create('perfil_recurso', function(Blueprint $table)
         {
             $table->increments('id');
-            $table->integer('recurso_id')->unsigned();
-            $table->foreign('recurso_id')->
-                references('id')->
-                on('recurso');
-         
+
             $table->integer('perfil_id')->unsigned();
             $table->foreign('perfil_id')->
                 references('id')->
                 on('perfil');
+
+            $table->integer('recurso_id')->unsigned();
+            $table->foreign('recurso_id')->
+                references('id')->
+                on('recurso');
         });
     }
 
@@ -55,7 +56,7 @@ class CreatePerfilTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('recurso_perfil');
+        Schema::dropIfExists('perfil_recurso');
         Schema::dropIfExists('perfil');
         Schema::dropIfExists('recurso');
     }

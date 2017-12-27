@@ -40,6 +40,11 @@ class Recurso extends Model
 
     protected $fillable = ['modulo', 'controlador', 'accion', 'recurso', 'descripcion', 'activo', 'custom'];
 
+    public function perfiles()
+    {
+        return $this->belongsToMany(Perfil::class, 'perfil_recurso');
+    }
+
     public function menu()
     {
     	return $this->hasMany(Menu::class);
