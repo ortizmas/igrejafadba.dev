@@ -33,12 +33,12 @@ class PermisosController extends Controller
 
     public function store(Request  $request)
     {
-    	$perfil = new Perfil();
-    	foreach ($request->privilegios as $value) {
-    		$data = explode('-', $value);
-    		$recurso = Recurso::find($data[0]);
-    		$recurso->perfiles()->sync($data[1]);
-    	}
+        $perfils = Perfil::find($request->input('perfil_id', []));
+        dd($perfils);
+        foreach ($perfils as $value) {
+            $perfil  = Perfil::find($value->id);
+            $perfil->recursos()->sync($request->input('privilegios', []));
+        }
 
     	return redirect()->route('permiso.index')->with('success', 'As permissões foram cadastrados');
     }

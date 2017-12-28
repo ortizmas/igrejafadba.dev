@@ -63,12 +63,15 @@
                                                     <td><?php echo $row->recurso; ?></td>
                                                     <td><?php echo $row->descripcion; ?></td>
                                                     <?php foreach ($perfiles as $perfil) { ?>
+                                                        
                                                         <td class="text-center">
                                                             <?php if (in_array("$perfil->id-$row->id", $privilegios)) { ?>
                                                                 <?php $old_privilegios[] = $perfil->id.'-'.$row->id; ?>
-                                                                <?php echo Form::checkbox('privilegios[]', $row->id.'-'.$perfil->id, TRUE); ?>
+                                                                <?php echo Form::checkbox('privilegios[]', $row->id, TRUE); ?>
+                                                                <?php echo Form::hidden('perfil_id[]', $perfil->id); ?>
                                                             <?php } else { ?>
-                                                                <?php echo Form::checkbox('privilegios[]', $row->id.'-'.$perfil->id, NULL); ?>
+                                                                <?php echo Form::checkbox('privilegios[]', $row->id, NULL); ?>
+                                                                <?php echo Form::hidden('perfil_id[]', $perfil->id); ?>
                                                             <?php } ?>
                                                         </td>
                                                     <?php } ?>

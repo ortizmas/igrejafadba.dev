@@ -43,6 +43,7 @@ class Recurso extends Model
     public function perfiles()
     {
         return $this->belongsToMany(Perfil::class, 'perfil_recurso');
+        //return $this->hasMany(Perfil::class, 'perfil_recurso');
     }
 
     public function menu()

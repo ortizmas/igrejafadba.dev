@@ -139,4 +139,16 @@
 	        ->select(DB::raw('count(*) as user_count'))
 	        ->get();
 	return $users;
+
+
+	
 	?>
+
+	<td class="text-center">
+        <?php if (in_array("$perfil->id-$row->id", $privilegios)) { ?>
+            <?php $old_privilegios[] = $perfil->id.'-'.$row->id; ?>
+            <?php echo Form::checkbox('privilegios[]', $row->id.'-'.$perfil->id, TRUE); ?>
+        <?php } else { ?>
+            <?php echo Form::checkbox('privilegios[]', $row->id.'-'.$perfil->id, NULL); ?>
+        <?php } ?>
+    </td>

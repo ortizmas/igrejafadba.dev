@@ -64,7 +64,7 @@ class Perfil extends Model
 
         $perfil = Perfil::from('perfil')
                     ->select('perfil.*', DB::raw(' count(users.id) as usuarios '))
-                    ->leftJoin('users', 'perfil.id', '=', 'users.perfil_id' )
+                    ->join('users', 'perfil.id', '=', 'users.perfil_id' )
                     ->whereNotNull('perfil.id')
                     ->where( function($query) use ($estado) {
                         if ( $estado == 'acl' ) {
@@ -79,6 +79,7 @@ class Perfil extends Model
                             }
                         }
                     })
+                    ->groupBy('perfil.id')
                     ->get();
         return $perfil;
     }
