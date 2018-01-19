@@ -13,6 +13,7 @@ class PermisosController extends Controller
 {
     public function index()
     {
+
     	$recurso = new Recurso();
     	// $perfil = Perfil::where('id', 2)->get()->first();
     	// echo "Perfil: {$perfil->rol} => ";

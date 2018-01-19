@@ -3,6 +3,9 @@
 namespace App\Http\Controllers\Painel;
 
 use App\Models\Perfil;
+use Auth;
+use App\Libraries\DwAcl;
+
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -18,6 +21,7 @@ class PerfilController extends Controller
     public function index()
     {
         
+
         $data['perfiles'] = Perfil::paginate();
         $data['pageConfig'] = $this->model;
         $data['perfiles_total'] = Perfil::count();
@@ -33,6 +37,12 @@ class PerfilController extends Controller
      */
     public function create()
     {
+        $acl = new DwAcl();
+        if (!$acl->check(Auth::user()->perfil_id)) {
+            session()->put('my_name',   'O Senhor não posees privilegios para acceder a <b>' . \Request::url() . '</b>');
+            return FALSE;
+        };
+
         return view('painel.perfiles.create');
     }
 

@@ -235,6 +235,9 @@ return [
         'Html' => Collective\Html\HtmlFacade::class,
 
         //Libraries
+        'DwAcl' => App\Libraries\DwAcl::class,
+        'Acl2' => App\Libraries\Acl2\Acl2::class,
+        'SimpleAcl' => App\Libraries\Acl2\Adapters\SimpleAcl::class,
         'MyLib' => App\Libraries\MyLib::class,
         'MenuBackend' => App\Libraries\MenuBackend::class,
 

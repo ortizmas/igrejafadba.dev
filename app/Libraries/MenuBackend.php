@@ -103,7 +103,7 @@
 		                        $html.= '<ul class="dropdown-menu">';
 		                        foreach($submenu as $item) {                        
 		                            $active = ($item->url==$route) ? 'active' : null;
-		                            $html.='<li><a class="'.$active.'" href="#"><i class="fa fa-users text-aqua"></i> '. $item->nome .'</a></li>';
+		                            $html.='<li><a class="'.$active.'" href="/'. $item->url .'"><i class="fa fa-users text-aqua"></i> '. $item->nome .'</a></li>';
 		                        }                        
 		                        $html.= '</ul>';
 		                        $html.= '</li>';

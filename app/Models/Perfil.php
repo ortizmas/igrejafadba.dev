@@ -109,5 +109,26 @@ class Perfil extends Model
         }        
         return $data;
     }
+    /**
+     * Método para obtener los ecursos de un perfil
+     * @param type $perfil
+     * @return type
+     */
+    public function getRecursos($perfil){   
+        $query = Recurso::from('perfil')
+                ->join('perfil_recurso', 'perfil.id', '=', 'perfil_recurso.perfil_id')
+                ->join('recurso', 'recurso.id', '=', 'perfil_recurso.recurso_id')
+                ->where('perfil.id', $perfil)
+                ->select('recurso.*')
+                ->get();
+        return $query;
+
+
+        // $columnas = "recurso.*";
+        // $join = "INNER JOIN recurso_perfil ON perfil.id = recurso_perfil.perfil_id ";
+        // $join.= "INNER JOIN recurso ON recurso.id = recurso_perfil.recurso_id ";
+        // $conditions = "perfil.id = '$perfil'";
+        // return $this->find("columns: $columnas" , "join: $join", "conditions: $conditions");
+    }
 
 }

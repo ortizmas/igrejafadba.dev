@@ -84,7 +84,6 @@ class LoginController extends Controller
         // Validamos los datos y ademas mandamos como un segundo parametro la opcion de recordar el usuario.
         if(Auth::attempt($userdata, $request->input('remember-me', 0)))
         {    
-
             //Redirecciona para el modulo App/Controllers/Dashboard/index_controller.php
             return redirect('painel/')->with('success','Ingreso correctamente al sistema');
 

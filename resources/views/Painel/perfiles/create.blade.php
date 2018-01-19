@@ -6,6 +6,12 @@
         <div class="col-md-8 col-md-offset-2">
             <div class="panel panel-default">
                 <div class="panel-heading">Criar Tarefa</div>
+                <?php 
+                    if(session()->has('my_name'))
+                         echo session()->get('my_name');
+                    else
+                        echo 'No data in the session';
+                ?>
 
                 <div class="panel-body">
                     <form class="form-horizontal" method="POST" action="{{ isset($perfil) ? route('perfil.update', $perfil->id) : route('perfil.store') }}">

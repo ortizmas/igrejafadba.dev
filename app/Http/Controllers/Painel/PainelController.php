@@ -7,6 +7,8 @@ use App\Http\Controllers\Controller;
 //use Helper;
 
 use App\Models\User;
+use Auth;
+use App\Libraries\DwAcl;
 // use App\Role;
 // use App\Permission;
 // use App\Post;
@@ -26,6 +28,7 @@ class PainelController extends Controller
     	//$totalPosts = Post::count();
     	//$IpReal =  getIp(); //\Request::ip();
     	//return view('painel.home.index', compact('totalUsers', 'totalRoles', 'totalPermissions', 'totalPosts', 'IpReal'));
+
         return view('painel.home.index');
     }
 }
