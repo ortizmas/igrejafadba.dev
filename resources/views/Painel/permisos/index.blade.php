@@ -67,11 +67,11 @@
                                                         <td class="text-center">
                                                             <?php if (in_array("$perfil->id-$row->id", $privilegios)) { ?>
                                                                 <?php $old_privilegios[] = $perfil->id.'-'.$row->id; ?>
-                                                                <?php echo Form::checkbox('privilegios[]', $row->id, TRUE); ?>
-                                                                <?php echo Form::hidden('perfil_id[]', $perfil->id); ?>
+                                                                <?php echo Form::checkbox('privilegios[]', $perfil->id . '-' . $row->id, TRUE); ?>
+                                                                <?php /*echo Form::hidden('perfil_id[]', $perfil->id); */?>
                                                             <?php } else { ?>
-                                                                <?php echo Form::checkbox('privilegios[]', $row->id, NULL); ?>
-                                                                <?php echo Form::hidden('perfil_id[]', $perfil->id); ?>
+                                                                <?php echo Form::checkbox('privilegios[]', $perfil->id . '-' . $row->id, NULL); ?>
+                                                                <?php /*echo Form::hidden('perfil_id[]', $perfil->id); */?>
                                                             <?php } ?>
                                                         </td>
                                                     <?php } ?>

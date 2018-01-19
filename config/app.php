@@ -236,9 +236,11 @@ return [
 
         //Libraries
         'MyLib' => App\Libraries\MyLib::class,
+        'MenuBackend' => App\Libraries\MenuBackend::class,
 
         //Helpers
         'MyFunction' => App\Helpers\MyFunction::class,
+        'MyUtils' => App\Helpers\MyUtils::class,
 
         //Controllers Btn
         'Btn' => App\Http\Controllers\Painel\Btn::class,

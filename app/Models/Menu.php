@@ -54,7 +54,6 @@ class Menu extends Model
      * Método para obtener los menús padres, por entorno o perfil
      */
     public function getListadoMenuPadres($entorno='', $perfil='') {
-
         if($entorno == Menu::FRONTEND) {
             $query = Menu::whereNull('menu_id')
                             ->where('visibilidad', $entorno)
@@ -64,37 +63,27 @@ class Menu extends Model
                             ->get();
             //$query = DB::table('menu as pai')->select('pai.*')->where('pai.visibilidad', 1)->get();
             return $query;
-        } else {
-            if($entorno){
-                $query = Menu::from('menu as pai')
-                                ->select('pai.*')
-                                ->leftJoin('recurso', 'pai.recurso_id', '=', 'recurso.id')
-                                ->leftJoin('recurso_perfil', 'recurso_perfil.recurso_id', '=', 'recurso.id')
-                                ->where('pai.id', '=', 'pai.menu_id')
-                                ->whereNull('pai.menu_id')
-                                ->where('pai.visibilidad', '=', $entorno)
-                                ->where('pai.activo', self::ACTIVO)
-                                ->groupBy('pai.id')
-                                ->orderBy('pai.posicion', 'ASC');
-            } else {
-                $query = Menu::from('menu as pai')
-                                ->select('pai.*')
-                                ->where('pai.id', '=', 'pai.menu_id')
-                                ->whereNull('pai.menu_id')
-                                ->groupBy('pai.id')
-                                ->orderBy('pai.posicion', 'ASC');
+        } else {    
+            $query = Menu::from('menu')
+                ->select('pai.*')
+                ->Join('menu as pai', 'pai.id', '=', 'menu.menu_id');
+            if ($entorno) {
+                $query->leftJoin('recurso', 'recurso.id', '=', 'menu.recurso_id');
+                $query->leftJoin('perfil_recurso', 'perfil_recurso.recurso_id', '=', 'recurso.id');
+                $query->where('pai.visibilidad', $entorno);
+                $query->where('pai.activo', self::ACTIVO);
             }
-
-            if(!empty($perfil)) {
-                //Verifico si el perfil tiene el comodín
-                $recurso = new RecursoPerfil();
-                if($recurso->count("recurso_id = ".Recurso::COMODIN." AND perfil_id= $perfil")) {
+            $query->whereNull('pai.menu_id');
+            if (!empty($perfil)) {
+                $obj = new PerfilRecurso();
+                if($obj::where('recurso_id', Recurso::COMODIN)->where('perfil_id', $perfil)->count()) {
                     $perfil = NULL; //Para que liste todos los menús
                 }
-                $conditions.= (empty($perfil) OR $perfil==Perfil::SUPER_USUARIO) ? '' : " AND recurso_perfil.perfil_id = $perfil";
+                (empty($perfil) OR $perfil==Perfil::SUPER_USUARIO) ? '' : $query->where('perfil_recurso.perfil_id', $perfil);
             }
-                            
-            return $query->get();
+            $query->groupBy('pai.id')
+                ->orderBy('pai.posicion', 'ASC');
+            return $query->get();     
         }
     }
 
@@ -102,21 +91,23 @@ class Menu extends Model
      * Método para obtener los submenús de cada menú según el perfil
      */
     public function getListadoSubmenu($entorno, $menu, $perfil='') {
-        $columns = 'menu.*';
-        $join = 'LEFT JOIN recurso ON recurso.id = menu.recurso_id ';
-        $join.= 'LEFT JOIN recurso_perfil ON recurso.id = recurso_perfil.recurso_id ';
-        $conditions = "menu.menu_id = $menu AND menu.visibilidad = $entorno AND menu.activo = ".self::ACTIVO;
-        if($perfil) {
-            //Verifico si el perfil tiene el comodín
-            $recurso = new RecursoPerfil();
-            if($recurso->count("recurso_id = ".Recurso::COMODIN." AND perfil_id= $perfil")) {
-                $perfil = NULL; //Para que liste todos los submenús
-            }
-            $conditions.= (empty($perfil) OR $perfil==Perfil::SUPER_USUARIO) ? '' :  " AND recurso_perfil.perfil_id = $perfil";
-        }
-        $group = 'menu.id';
-        $order = 'menu.posicion ASC';
-        return $this->find("columns: $columns", "join: $join", "conditions: $conditions", "group: $group", "order: $order");
+        $query = Menu::from('menu')
+                    ->leftJoin('recurso', 'recurso.id', '=', 'menu.recurso_id')
+                    ->leftJoin('perfil_recurso', 'recurso.id', '=', 'perfil_recurso.recurso_id')
+                    ->select('menu.*')
+                    ->where('menu.menu_id', $menu)
+                    ->where('menu.visibilidad', $entorno)
+                    ->where('menu.activo', self::ACTIVO);
+                    if ($perfil) {
+                        $recurso = new PerfilRecurso();
+                        if ($recurso::where('recurso_id', Recurso::COMODIN)->where('perfil_id', $perfil)->count()) {
+                            $perfil = NULL; //Para que liste todos los submenús
+                        }
+                        (empty($perfil) OR $perfil==Perfil::SUPER_USUARIO) ? '' : $query->where('perfil_recurso.perfil_id', $perfil);
+                    }
+                    $query->groupBy('menu.id')
+                    ->orderBy('menu.posicion', 'ASC');
+        return $query->get();
     }
 
     /**
@@ -143,7 +134,6 @@ class Menu extends Model
                         ->where('menu.visibilidad', $entorno)
                         ->where('menu.activo', self::ACTIVO)
                         ->groupBy('menu.id')
-                        ->orderBy('menu.posicion', 'ASC')
                         ->get();
         return $query;
     }
@@ -156,41 +146,6 @@ class Menu extends Model
      * @return type
      */
     public function getListadoMenu($estado='todos', $order='', $page=0) {
-        // $columns = 'menu.*, (padre.menu) AS padre, (padre.posicion) AS padre_posicion, recurso.recurso';
-        // $join = 'LEFT JOIN recurso ON recurso.id = menu.recurso_id ';
-        // $join.= 'LEFT JOIN menu AS padre ON padre.id = menu.menu_id ';
-        // $conditions = 'menu.id IS NOT NULL';
-        // if($estado!='todos') {
-        //     $conditions.= ($estado==self::ACTIVO) ? " AND menu.activo=".self::ACTIVO : " AND menu.activo=".self::INACTIVO;
-        // }
-
-        // $order = $this->get_order($order, 'padre_posicion', array(
-        //     'posicion' => array(
-        //         'ASC'  => 'padre_posicion ASC, menu.posicion ASC',
-        //         'DESC' => 'padre_posicion DESC, menu.posicion DESC'
-        //     ),
-        //     'padre' => array(
-        //         'ASC'  => 'padre ASC, padre_posicion ASC, menu.posicion ASC',
-        //         'DESC' => 'padre DESC, padre_posicion DESC, menu.posicion DESC'
-        //     ),
-        //     'menu' => array(
-        //         'ASC'  => 'padre ASC, menu ASC, padre_posicion ASC, menu.posicion ASC',
-        //         'DESC' => 'padre DESC, menu DESC, padre_posicion DESC, menu.posicion DESC'
-        //     ),
-        //     'visibilidad' => array(
-        //         'ASC'  => 'padre.visibilidad ASC, menu.visibilidad ASC, menu ASC, padre_posicion ASC, menu.posicion ASC',
-        //         'DESC' => 'padre.visibilidad DESC, menu.visibilidad DESC, padre DESC, menu DESC, padre_posicion DESC, menu.posicion DESC'
-        //     ),
-        //     'activo' => array(
-        //         'ASC'  => 'menu.activo ASC, padre_posicion ASC, menu.posicion ASC',
-        //         'DESC' => 'menu.activo DESC, menu.visibilidad DESC, padre DESC, menu DESC, padre_posicion DESC, menu.posicion DESC'
-        //     )
-        // ));
-
-        // if($page) {
-        //     return $this->paginated("columns: $columns", "join: $join", "conditions: $conditions", "order: $order", "page: $page");
-        // }
-        // return $this->find("columns: $columns", "join: $join", "conditions: $conditions", "order: $order");
 
         $query = Menu::from('menu')
                         ->select('menu.*', 'pai.nome AS padre', 'pai.posicion AS pai_posicion', 'recurso.recurso')

@@ -66,7 +66,7 @@
                         <div class="col-md-4">
                             <div class='form-group'>
                                 {!! Form::label('recurso_id', 'Recurso:') !!}
-                                {!! Form::select('recurso_id', array('' => 'Ninguno', $recursos), null, ['class' => 'form-control', 'id' => 'menu_recurso_id']) !!}
+                                {!! Form::select('recurso_id', array('Ninguno' => 'Ninguno', $recursos), null, ['class' => 'form-control', 'id' => 'menu_recurso_id']) !!}
                                 {{-- <select class="form-control" name="recurso_id" id="menu_recurso_id">
                                     @if ($menu)
                                         <option value="{{ $menu->id }}">{{ $menu->url }}</option>

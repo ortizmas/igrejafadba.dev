@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Painel;
 
 use App\Models\Perfil;
 use App\Models\Recurso;
+use App\Models\PerfilRecurso;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -31,15 +32,30 @@ class PermisosController extends Controller
     	return view('painel.permisos.index', compact('recursos', 'perfiles', 'privilegios'));
     }
 
-    public function store(Request  $request)
+    public function store(Request  $request, PerfilRecurso $obj)
     {
-        $perfils = Perfil::find($request->input('perfil_id', []));
-        dd($perfils);
-        foreach ($perfils as $value) {
-            $perfil  = Perfil::find($value->id);
-            $perfil->recursos()->sync($request->input('privilegios', []));
+        if($request['privilegios'] OR $request['old_privilegios']) {
+            if($obj->setPerfilRecurso($request)) {
+                return redirect()->route('permiso.index')->with('success', 'As permissões foram cadastrados');              
+                //Input::delete('privilegios');//Para que no queden persistentes
+                //Input::delete('old_privilegios');
+            } else {
+                return redirect()->route('permiso.index')->with('status', 'As permissões não foram cadastrados');
+            }
+        } else {
+            return redirect()->route('permiso.index')->with('status', 'Têm que selecionar pelomenos um recurso');
         }
-
-    	return redirect()->route('permiso.index')->with('success', 'As permissões foram cadastrados');
+    	
     }
+
+    // public function store(Request  $request)
+    // {
+    //     $perfils = Perfil::find($request->input('perfil_id', []));
+    //     foreach ($perfils as $value) {
+    //         $perfil  = Perfil::find($value->id);
+    //         $perfil->recursos()->sync($request->input('privilegios', []));
+    //     }
+
+    //     return redirect()->route('permiso.index')->with('success', 'As permissões foram cadastrados');
+    // }
 }
