@@ -287,7 +287,6 @@ class Acl {
      * @param mixed $access
      */
     public function allow($role, $resource, $access) {
-        
         if (!in_array($role, $this->roles_names)) {
             throw new KumbiaException("No existe el rol '$role' en la lista");
 

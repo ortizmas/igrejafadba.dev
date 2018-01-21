@@ -47,8 +47,8 @@ class DwAcl {
      */
     protected function _setPerfiles($perfiles) {
         foreach ($perfiles as $perfil) {
-            if ($perfil->activo==Perfil::ACTIVO) {                 
-                self::$_acl->user($perfil->id, array($perfil->id));                
+            if ($perfil->activo==Perfil::ACTIVO) {                
+                self::$_acl->user($perfil->id, array($perfil->id));               
                 $plantilla = empty($perfil->plantilla) ? 'default' : $perfil->plantilla;                
                 $this->_setTemplate($perfil->id, $plantilla);
                 $this->_setRecursos($perfil->id, $perfil->getRecursos($perfil->id));
@@ -78,7 +78,6 @@ class DwAcl {
                 $urls[] = $recurso->recurso;            
             }
         }  
-
         self::$_acl->allow($perfil, $urls);
     }
     
@@ -88,6 +87,7 @@ class DwAcl {
      */
     public  function check($perfil) { 
         $currentURL = \Request::url();
+        $currentURL = \Request::route();
         $parameters = \Request::segment(3);     
         // $modulo         = Route::get('module');
         // $controlador    = Route::get('controller');
@@ -100,10 +100,12 @@ class DwAcl {
         // if (isset($this->_templates["$perfil"]) && !Input::isAjax()) {
         //     View::template("backend/{$this->_templates["$perfil"]}");
         // }
-        if (isset($this->_templates["$perfil"])) {
-            //View::template("backend/{$this->_templates["$perfil"]}");
-            return view('painel.home.index');
-        }
+        
+        // if (isset($this->_templates["$perfil"])) {
+        //     //View::template("backend/{$this->_templates["$perfil"]}");
+        //     return view('painel.home.index');
+        // }
+        
         if ($modulo) {
             $recurso1 = "$modulo/$controlador/$accion";//Por si tiene acceso a una única acción
             $recurso2 = "$modulo/$controlador/*";  //por si tiene acceso a todas las acciones

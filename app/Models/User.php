@@ -33,4 +33,9 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Perfil::class);
     }
+
+    public function hasPermission(Recurso $permission)
+    {
+        dd($permission->recurso);
+    }
 }

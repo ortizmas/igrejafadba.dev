@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Painel;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-//use Helper;
 
 use App\Models\User;
 use Auth;
@@ -29,6 +28,7 @@ class PainelController extends Controller
     	//$IpReal =  getIp(); //\Request::ip();
     	//return view('painel.home.index', compact('totalUsers', 'totalRoles', 'totalPermissions', 'totalPosts', 'IpReal'));
 
+        
         return view('painel.home.index');
     }
 }

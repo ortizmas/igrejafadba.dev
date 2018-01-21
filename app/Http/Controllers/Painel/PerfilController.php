@@ -20,7 +20,6 @@ class PerfilController extends Controller
      */
     public function index()
     {
-        
 
         $data['perfiles'] = Perfil::paginate();
         $data['pageConfig'] = $this->model;
@@ -37,12 +36,6 @@ class PerfilController extends Controller
      */
     public function create()
     {
-        $acl = new DwAcl();
-        if (!$acl->check(Auth::user()->perfil_id)) {
-            session()->put('my_name',   'O Senhor não posees privilegios para acceder a <b>' . \Request::url() . '</b>');
-            return FALSE;
-        };
-
         return view('painel.perfiles.create');
     }
 

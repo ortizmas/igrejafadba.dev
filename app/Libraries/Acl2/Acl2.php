@@ -28,6 +28,7 @@ abstract class Acl2
      */
     public function check($resource, $user)
     {
+
         // Itera en los roles de usuario
         foreach ($this->_getUserRoles($user) as $role) {
             if ($this->_checkRole($role, $resource)) {
@@ -97,7 +98,6 @@ abstract class Acl2
         if (!$adapter) {
             $adapter = self::$_defaultAdapter;
         }
-
         require_once __DIR__ . "/Adapters/{$adapter}Acl.php";
         //$url = require_once __DIR__ . "/Adapters/{$adapter}Acl.php";
         $class = $adapter . 'Acl';
