@@ -3,6 +3,7 @@
 
 	use App\Models\Recurso;
 	use App\Models\Perfil;
+	use App\Models\Menu;
 	use Illuminate\Support\Str;
 	use Illuminate\Http\Request;
 	/**
@@ -10,6 +11,7 @@
 	 */
 	class MyLib
 	{
+		const BACKEND = 1;
 	    /**
 	     * construct
 	     */
@@ -89,6 +91,7 @@
 	        }
 	        require_once $file; //inclue arquivo 
 	    }
+
 	}
 	
 ?>
